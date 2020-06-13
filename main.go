@@ -17,6 +17,10 @@ func main() {
 	r.Use(middleware.Recoverer)
 	//routing
 	r.Get("/hello", handler.Hello)
+	r.Post("/createproject", handler.Hello)
+	r.Get("/readproject", handler.Hello)
+	r.Patch("/updateproject", handler.Hello)
+	r.Delete("/deleteproject", handler.Hello)
 	// start the server on port 8000
 	log.Fatal(http.ListenAndServe(":8000", r))
 }
