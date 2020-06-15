@@ -17,10 +17,26 @@ func main() {
 	r.Use(middleware.Recoverer)
 	//routing
 	r.Get("/hello", handler.Hello)
-	r.Post("/createproject", handler.Hello)
-	r.Get("/readproject", handler.Hello)
-	r.Patch("/updateproject", handler.Hello)
-	r.Delete("/deleteproject", handler.Hello)
+	r.Post("/{projectid}", handler.Hello)
+	r.Get("/{projectid}", handler.Hello)
+	r.Patch("/{projectid}", handler.Hello)
+	r.Delete("/{projectid}", handler.Hello)
+
+	r.Post("/{projectid}/{columnid}", handler.Hello)
+	r.Get("/{projectid}/{columnid}", handler.Hello)
+	r.Patch("/{projectid}/{columnid}", handler.Hello)
+	r.Delete("/{projectid}/{columnid}", handler.Hello)
+
+	r.Post("/{projectid}/{columnid}/{taskid}", handler.Hello)
+	r.Get("/{projectid}/{columnid}/{taskid}", handler.Hello)
+	r.Patch("/{projectid}/{columnid}/{taskid}", handler.Hello)
+	r.Delete("/{projectid}/{columnid}/{taskid}", handler.Hello)
+
+	r.Post("/{projectid}/{columnid}/{taskid}/{commentid}", handler.Hello)
+	r.Get("/{projectid}/{columnid}/{taskid}/{commentid}", handler.Hello)
+	r.Patch("/{projectid}/{columnid}/{taskid}/{commentid}", handler.Hello)
+	r.Delete("/{projectid}/{columnid}/{taskid}/{commentid}", handler.Hello)
+
 	// start the server on port 8000
 	log.Fatal(http.ListenAndServe(":8000", r))
 }
