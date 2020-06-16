@@ -1,6 +1,7 @@
 package core
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/likejehu/dearapril/models"
@@ -16,8 +17,9 @@ func (c *Controller) SayHello() {
 }
 
 // CreateProject  creates new project
-func (c *Controller) CreateProject() (p *models.Project, err error) {
+func (c *Controller) CreateProject(reqBody []byte) (p *models.Project, err error) {
 	p = new(models.Project)
+	json.Unmarshal(reqBody, &p)
 	return p, nil
 }
 
