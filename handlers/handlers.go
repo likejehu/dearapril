@@ -14,7 +14,7 @@ import (
 type AppController interface {
 	SayHello()
 	CreateProject(reqBody []byte) (p *models.Project, err error)
-	UpdateProject(id string) (p *models.Project, err error)
+	UpdateProject(id string, reqBody []byte) (p *models.Project, err error)
 	ReadProject(id string) (p *models.Project, err error)
 	DeleteProject(id string) (err error)
 }
@@ -56,6 +56,8 @@ func (h *Handler) ReadProject(w http.ResponseWriter, r *http.Request) {
 // UpdateProject is for creating a new project
 func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectid") // getting id of project from the route
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	h.App.UpdateProject(projectID, reqBody)
 	fmt.Println("project updated!", projectID)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)

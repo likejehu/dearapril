@@ -9,9 +9,9 @@ import (
 
 //Storer is interface for database operations
 type Storer interface {
-	Post(id string)
+	Post(p *models.Project)
 	Get(id string)
-	Update(id string)
+	Update(id string, p *models.Project)
 	Delete(id string)
 }
 
@@ -29,14 +29,15 @@ func (c *Controller) SayHello() {
 func (c *Controller) CreateProject(reqBody []byte) (p *models.Project, err error) {
 	p = new(models.Project)
 	json.Unmarshal(reqBody, &p)
+	c.Store.Post(p)
 	return p, nil
 }
 
 // UpdateProject  updates properties of  given project
-func (c *Controller) UpdateProject(id string) (p *models.Project, err error) {
+func (c *Controller) UpdateProject(id string, reqBody []byte) (p *models.Project, err error) {
 	p = new(models.Project)
-
-	c.Store.Update(id)
+	json.Unmarshal(reqBody, &p)
+	c.Store.Update(id, p)
 	return p, nil
 }
 
