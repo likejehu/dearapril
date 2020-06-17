@@ -58,7 +58,7 @@ func connectCloud() (err error) {
 	return err
 }
 
-func (store *dbStore) Set(p *models.Project) (err error) {
+func (store *dbStore) Post(p *models.Project) (err error) {
 	_ = store.cloud.Query("INSERT INTO links VALUES ($1)", p)
 	return err
 }
