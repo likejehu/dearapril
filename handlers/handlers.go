@@ -40,7 +40,7 @@ func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-// ReadProject is for creating a new project
+// ReadProject is for reading a new project
 func (h *Handler) ReadProject(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectid") // getting id of project from the route
 	p, err := h.App.ReadProject(projectID)
@@ -53,7 +53,7 @@ func (h *Handler) ReadProject(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-// UpdateProject is for creating a new project
+// UpdateProject is for updating a new project
 func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectid") // getting id of project from the route
 	reqBody, _ := ioutil.ReadAll(r.Body)
@@ -63,9 +63,49 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-// DeleteProject is for creating a new project
+// DeleteProject is for deleting a new project
 func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 	projectID := chi.URLParam(r, "projectid") // getting id of project from the route
 	fmt.Println("project deleted!", projectID)
+	w.WriteHeader(http.StatusNoContent)
+}
+
+// CreateColumn is for creating a new Column
+func (h *Handler) CreateColumn(w http.ResponseWriter, r *http.Request) {
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	fmt.Println("Column created!")
+	fmt.Println(reqBody)
+	h.App.CreateColumn(reqBody)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+}
+
+// ReadColumn is for reading a  Column
+func (h *Handler) ReadColumn(w http.ResponseWriter, r *http.Request) {
+	columnID := chi.URLParam(r, "columnid") // getting id of project from the route
+	p, err := h.App.ReadColumn(columnID)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Println("this is ur column! ", p)
+	w.WriteHeader(http.StatusOK)
+}
+
+// UpdateColumn is for updating a Column
+func (h *Handler) UpdateColumn(w http.ResponseWriter, r *http.Request) {
+	columnID := chi.URLParam(r, "columnid") // getting id of project from the route
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	h.App.UpdateColumn(columnID, reqBody)
+	fmt.Println("column updated!", columnID)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+}
+
+// DeleteColumn is for deleting a Column
+func (h *Handler) DeleteColumn(w http.ResponseWriter, r *http.Request) {
+	columnID := chi.URLParam(r, "columnid") // getting id of project from the route
+	fmt.Println("column deleted!", columnID)
 	w.WriteHeader(http.StatusNoContent)
 }
