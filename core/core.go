@@ -53,3 +53,33 @@ func (c *Controller) DeleteProject(id string) (err error) {
 	c.Store.Delete(id)
 	return nil
 }
+
+// CreateColumn  creates new Column
+func (c *Controller) CreateColumn(reqBody []byte) (p *models.Project, err error) {
+	p = new(models.Project)
+	json.Unmarshal(reqBody, &p)
+	c.Store.Post(p)
+	return p, nil
+}
+
+// UpdateColumn  updates properties of  given Column
+func (c *Controller) UpdateColumn(id string, reqBody []byte) (p *models.Project, err error) {
+	p = new(models.Project)
+
+	json.Unmarshal(reqBody, &p)
+	c.Store.Update(id, p)
+	return p, nil
+}
+
+// ReadColumn  gets given pColumn
+func (c *Controller) ReadColumn(id string) (p *models.Project, err error) {
+	p = new(models.Project)
+	c.Store.Get(id)
+	return p, nil
+}
+
+// DeleteColumn  deletes given Column
+func (c *Controller) DeleteColumn(id string) (err error) {
+	c.Store.Delete(id)
+	return nil
+}
