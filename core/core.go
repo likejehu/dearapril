@@ -25,6 +25,8 @@ func (c *Controller) SayHello() {
 	fmt.Println("hello!")
 }
 
+//PROJECTS
+
 // CreateProject  creates new project
 func (c *Controller) CreateProject(reqBody []byte) (p *models.Project, err error) {
 	p = new(models.Project)
@@ -54,6 +56,8 @@ func (c *Controller) DeleteProject(id string) (err error) {
 	return nil
 }
 
+//COLUMNS
+
 // CreateColumn  creates new Column
 func (c *Controller) CreateColumn(reqBody []byte) (p *models.Project, err error) {
 	p = new(models.Project)
@@ -81,5 +85,72 @@ func (c *Controller) ReadColumn(id string) (p *models.Project, err error) {
 // DeleteColumn  deletes given Column
 func (c *Controller) DeleteColumn(id string) (err error) {
 	c.Store.Delete(id)
+
+	return nil
+}
+
+//TASKS
+
+// CreateTask  creates new Task
+func (c *Controller) CreateTask(reqBody []byte) (p *models.Project, err error) {
+	p = new(models.Project)
+	json.Unmarshal(reqBody, &p)
+	c.Store.Post(p)
+	return p, nil
+}
+
+// UpdateTask  updates properties of  given Task
+func (c *Controller) UpdateTask(id string, reqBody []byte) (p *models.Project, err error) {
+	p = new(models.Project)
+
+	json.Unmarshal(reqBody, &p)
+	c.Store.Update(id, p)
+	return p, nil
+}
+
+// ReadTask  gets given Task
+func (c *Controller) ReadTask(id string) (p *models.Project, err error) {
+	p = new(models.Project)
+	c.Store.Get(id)
+	return p, nil
+}
+
+// DeleteTask  deletes given Task
+func (c *Controller) DeleteTask(id string) (err error) {
+	c.Store.Delete(id)
+
+	return nil
+}
+
+//COMMENTS
+
+// CreateComment  creates new Task
+func (c *Controller) CreateComment(reqBody []byte) (p *models.Project, err error) {
+	p = new(models.Project)
+	json.Unmarshal(reqBody, &p)
+	c.Store.Post(p)
+	return p, nil
+}
+
+// UpdateComment   updates properties of  given Comment
+func (c *Controller) UpdateComment(id string, reqBody []byte) (p *models.Project, err error) {
+	p = new(models.Project)
+
+	json.Unmarshal(reqBody, &p)
+	c.Store.Update(id, p)
+	return p, nil
+}
+
+// ReadComment   gets given Comment
+func (c *Controller) ReadComment(id string) (p *models.Project, err error) {
+	p = new(models.Project)
+	c.Store.Get(id)
+	return p, nil
+}
+
+// DeleteComment   deletes given Comment
+func (c *Controller) DeleteComment(id string) (err error) {
+	c.Store.Delete(id)
+
 	return nil
 }
