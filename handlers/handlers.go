@@ -24,8 +24,8 @@ type Handler struct {
 	App AppController
 }
 
-// Hello just says hello
-func (h *Handler) Hello(w http.ResponseWriter, r *http.Request) {
+// GetAllProjects just says hello
+func (h *Handler) GetAllProjects(w http.ResponseWriter, r *http.Request) {
 	h.App.SayHello()
 	w.WriteHeader(http.StatusOK)
 }

@@ -16,7 +16,7 @@ func main() {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 	//routing
-	r.Get("/hello", handler.Hello)
+	r.Get("/projects", handler.GetAllProjects)
 	r.Post("/{projectid}", handler.Hello)
 	r.Get("/{projectid}", handler.Hello)
 	r.Patch("/{projectid}", handler.Hello)

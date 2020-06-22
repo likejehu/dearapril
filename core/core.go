@@ -11,6 +11,7 @@ import (
 type Storer interface {
 	Post(p *models.Project)
 	Get(id string)
+	GetAll()
 	Update(id string, p *models.Project)
 	Delete(id string)
 }
@@ -26,6 +27,13 @@ func (c *Controller) SayHello() {
 }
 
 //PROJECTS
+
+// ReadProjects  gets all the projects
+func (c *Controller) ReadProjects() (p *models.Project, err error) {
+	p = new(models.Project)
+	c.Store.GetAll()
+	return p, nil
+}
 
 // CreateProject  creates new project
 func (c *Controller) CreateProject(reqBody []byte) (p *models.Project, err error) {
