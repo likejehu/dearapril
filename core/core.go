@@ -142,6 +142,12 @@ func (c *Controller) DeleteTask(id string) (err error) {
 	return nil
 }
 
+// MoveTask  moves given Task to left/right (across the Columns) or up/down (to prioritize it)
+func (c *Controller) MoveTask(id string, direction string) (err error) {
+
+	return nil
+}
+
 //COMMENTS
 
 // CreateComment  creates new Task

@@ -33,6 +33,7 @@ func main() {
 	r.Get("/{projectid}/{columnid}/{taskid}", handler.Hello)
 	r.Patch("/{projectid}/{columnid}/{taskid}", handler.Hello)
 	r.Delete("/{projectid}/{columnid}/{taskid}", handler.Hello)
+	r.Patch("/{projectid}/{columnid}/{taskid}/move/{direction}", handler.Hello)
 
 	r.Post("/{projectid}/{columnid}/{taskid}/{commentid}", handler.Hello)
 	r.Get("/{projectid}/{columnid}/{taskid}/{commentid}", handler.Hello)
