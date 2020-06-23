@@ -83,7 +83,7 @@ func (c *Controller) UpdateColumn(id string, reqBody []byte) (p *models.Project,
 	return p, nil
 }
 
-// ReadColumn  gets given pColumn
+// ReadColumn  gets given Column
 func (c *Controller) ReadColumn(id string) (p *models.Project, err error) {
 	p = new(models.Project)
 	c.Store.Get(id)
@@ -93,12 +93,6 @@ func (c *Controller) ReadColumn(id string) (p *models.Project, err error) {
 // DeleteColumn  deletes given Column
 func (c *Controller) DeleteColumn(id string) (err error) {
 	c.Store.Delete(id)
-
-	return nil
-}
-
-// RenameColumn  renames given Column
-func (c *Controller) RenameColumn(id string) (err error) {
 
 	return nil
 }

@@ -109,3 +109,83 @@ func (h *Handler) DeleteColumn(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("column deleted!", columnID)
 	w.WriteHeader(http.StatusNoContent)
 }
+
+// CreateTask is for creating a new Task
+func (h *Handler) CreateTask(w http.ResponseWriter, r *http.Request) {
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	fmt.Println("Task created!")
+	fmt.Println(reqBody)
+	h.App.CreateTask(reqBody)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+}
+
+// ReadTask is for reading a  Task
+func (h *Handler) ReadTask(w http.ResponseWriter, r *http.Request) {
+	taskID := chi.URLParam(r, "taskid") // getting id of Task from the route
+	p, err := h.App.ReadTask(taskID)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Println("this is ur Task! ", p)
+	w.WriteHeader(http.StatusOK)
+}
+
+// UpdateTask is for updating a Task
+func (h *Handler) UpdateTask(w http.ResponseWriter, r *http.Request) {
+	taskID := chi.URLParam(r, "taskid") // getting id of Task from the route
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	h.App.UpdateTask(taskID, reqBody)
+	fmt.Println("Task updated!", taskID)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+}
+
+// DeleteTask is for deleting a Task
+func (h *Handler) DeleteTask(w http.ResponseWriter, r *http.Request) {
+	taskID := chi.URLParam(r, "taskid") // getting id of Comment from the route
+	fmt.Println("Task deleted!", taskID)
+	w.WriteHeader(http.StatusNoContent)
+}
+
+// CreateComment is for creating a new Comment
+func (h *Handler) CreateComment(w http.ResponseWriter, r *http.Request) {
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	fmt.Println("Comment created!")
+	fmt.Println(reqBody)
+	h.App.CreateComment(reqBody)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+}
+
+// ReadComment is for reading a  Comment
+func (h *Handler) ReadComment(w http.ResponseWriter, r *http.Request) {
+	commentID := chi.URLParam(r, "commentid") // getting id of Comment from the route
+	p, err := h.App.ReadComment(commentID)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Println("this is ur comment! ", p)
+	w.WriteHeader(http.StatusOK)
+}
+
+// UpdateComment is for updating a Comment
+func (h *Handler) UpdateComment(w http.ResponseWriter, r *http.Request) {
+	commentID := chi.URLParam(r, "commentid") // getting id of comment from the route
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	h.App.UpdateComment(commentID, reqBody)
+	fmt.Println("comment updated!", commentID)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+}
+
+// DeleteComment is for deleting a Comment
+func (h *Handler) DeleteComment(w http.ResponseWriter, r *http.Request) {
+	commentID := chi.URLParam(r, "commentid") // getting id of comment from the route
+	fmt.Println("comment deleted!", commentID)
+	w.WriteHeader(http.StatusNoContent)
+}

@@ -26,7 +26,6 @@ func main() {
 	r.Get("/{projectid}/{columnid}", handler.Hello)
 	r.Patch("/{projectid}/{columnid}", handler.Hello)
 	r.Delete("/{projectid}/{columnid}", handler.Hello)
-	r.Patch("/{projectid}/{columnid}/rename", handler.Hello)
 	r.Patch("/{projectid}/{columnid}/move/{direction}", handler.Hello)
 
 	r.Post("/{projectid}/{columnid}/{taskid}", handler.Hello)
