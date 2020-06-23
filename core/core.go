@@ -97,6 +97,18 @@ func (c *Controller) DeleteColumn(id string) (err error) {
 	return nil
 }
 
+// RenameColumn  renames given Column
+func (c *Controller) RenameColumn(id string) (err error) {
+
+	return nil
+}
+
+// MoveColumn  moves given Column to left or right
+func (c *Controller) MoveColumn(id string, direction string) (err error) {
+
+	return nil
+}
+
 //TASKS
 
 // CreateTask  creates new Task
