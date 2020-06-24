@@ -67,27 +67,32 @@ func (c *Controller) DeleteProject(id string) (err error) {
 //COLUMNS
 
 // CreateColumn  creates new Column
-func (c *Controller) CreateColumn(reqBody []byte) (p *models.Project, err error) {
-	p = new(models.Project)
-	json.Unmarshal(reqBody, &p)
-	c.Store.Post(p)
-	return p, nil
+func (c *Controller) CreateColumn(reqBody []byte) (col *models.Column, err error) {
+	proj := new(models.Project)
+	col = new(models.Column)
+	id := "2"
+	proj.Cls[id] = col
+	json.Unmarshal(reqBody, &proj)
+	c.Store.Post(proj)
+	return proj.Cls[id], nil
 }
 
 // UpdateColumn  updates properties of  given Column
-func (c *Controller) UpdateColumn(id string, reqBody []byte) (p *models.Project, err error) {
-	p = new(models.Project)
-
-	json.Unmarshal(reqBody, &p)
-	c.Store.Update(id, p)
-	return p, nil
+func (c *Controller) UpdateColumn(id string, reqBody []byte) (col *models.Column, err error) {
+	proj := new(models.Project)
+	col = new(models.Column)
+	proj.Cls[id] = col
+	json.Unmarshal(reqBody, &proj)
+	c.Store.Update(id, proj)
+	return col, nil
 }
 
 // ReadColumn  gets given Column
-func (c *Controller) ReadColumn(id string) (p *models.Project, err error) {
-	p = new(models.Project)
+func (c *Controller) ReadColumn(id string) (col *models.Column, err error) {
+	proj := new(models.Project)
 	c.Store.Get(id)
-	return p, nil
+	col = proj.Cls[id]
+	return col, nil
 }
 
 // DeleteColumn  deletes given Column
