@@ -59,10 +59,36 @@ func connectCloud() (err error) {
 }
 
 func (store *dbStore) Post(p *models.Project) (err error) {
-	_ = store.cloud.Query("INSERT INTO links VALUES ($1)", p)
+	_ = store.cloud.Query("INSERT INTO projects VALUES ($1)", p)
 	return err
 }
 func (store *dbStore) Get(key string) (project *models.Project, err error) {
+	project = new(models.Project)
+
+	err = store.cloud.QueryRow(key).Scan(&project)
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return project, err
+
+}
+func (store *dbStore) GetAll() (project *models.Project, err error) {
+	project = new(models.Project)
+	key := "1"
+	err = store.cloud.QueryRow(key).Scan(&project)
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return project, err
+
+}
+func (store *dbStore) Update(key string) (project *models.Project, err error) {
 	project = new(models.Project)
 
 	err = store.cloud.QueryRow(key).Scan(&project)
