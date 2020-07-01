@@ -2,6 +2,7 @@ package models
 
 //Project must contain at least one column
 type Project struct {
+	ID          int
 	Name        string
 	Description string
 	Columns
