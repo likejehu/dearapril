@@ -58,11 +58,13 @@ func connectCloud() (err error) {
 	return err
 }
 
-func (store *dbStore) Post(p *models.Project) (err error) {
+//Projects
+
+func (store *dbStore) PostProject(p *models.Project) (err error) {
 	_ = store.cloud.Query("INSERT INTO projects VALUES ($1)", p)
 	return err
 }
-func (store *dbStore) Get(key string) (project *models.Project, err error) {
+func (store *dbStore) GetProject(key string) (project *models.Project, err error) {
 	project = new(models.Project)
 
 	err = store.cloud.QueryRow(key).Scan(&project)
@@ -75,7 +77,7 @@ func (store *dbStore) Get(key string) (project *models.Project, err error) {
 	return project, err
 
 }
-func (store *dbStore) GetAll() (project *models.Project, err error) {
+func (store *dbStore) GetAllProjects() (project *models.Project, err error) {
 	project = new(models.Project)
 	key := "1"
 	err = store.cloud.QueryRow(key).Scan(&project)
@@ -88,7 +90,7 @@ func (store *dbStore) GetAll() (project *models.Project, err error) {
 	return project, err
 
 }
-func (store *dbStore) Update(key string) (project *models.Project, err error) {
+func (store *dbStore) UpdateProject(key string) (project *models.Project, err error) {
 	project = new(models.Project)
 
 	err = store.cloud.QueryRow(key).Scan(&project)
@@ -100,4 +102,158 @@ func (store *dbStore) Update(key string) (project *models.Project, err error) {
 	}
 	return project, err
 
+}
+func (store *dbStore) DeleteProject(p *models.Project) (err error) {
+	_ = store.cloud.Query("INSERT INTO projects VALUES ($1)", p)
+	return err
+}
+
+//Columns
+
+func (store *dbStore) PostColumn(p *models.Project) (err error) {
+	_ = store.cloud.Query("INSERT INTO projects VALUES ($1)", p)
+	return err
+}
+func (store *dbStore) GetColumn(key string) (project *models.Project, err error) {
+	project = new(models.Project)
+
+	err = store.cloud.QueryRow(key).Scan(&project)
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return project, err
+
+}
+func (store *dbStore) GetAllColumns() (project *models.Project, err error) {
+	project = new(models.Project)
+	key := "1"
+	err = store.cloud.QueryRow(key).Scan(&project)
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return project, err
+
+}
+func (store *dbStore) UpdateColumn(key string) (project *models.Project, err error) {
+	project = new(models.Project)
+
+	err = store.cloud.QueryRow(key).Scan(&project)
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return project, err
+
+}
+func (store *dbStore) DeleteColumn(p *models.Project) (err error) {
+	_ = store.cloud.Query("INSERT INTO projects VALUES ($1)", p)
+	return err
+}
+
+//Tasks
+
+func (store *dbStore) PostTask(p *models.Project) (err error) {
+	_ = store.cloud.Query("INSERT INTO projects VALUES ($1)", p)
+	return err
+}
+func (store *dbStore) GetTask(key string) (project *models.Project, err error) {
+	project = new(models.Project)
+
+	err = store.cloud.QueryRow(key).Scan(&project)
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return project, err
+
+}
+func (store *dbStore) GetAllTasks() (project *models.Project, err error) {
+	project = new(models.Project)
+	key := "1"
+	err = store.cloud.QueryRow(key).Scan(&project)
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return project, err
+
+}
+func (store *dbStore) UpdateTask(key string) (project *models.Project, err error) {
+	project = new(models.Project)
+
+	err = store.cloud.QueryRow(key).Scan(&project)
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return project, err
+
+}
+func (store *dbStore) DeleteTask(p *models.Project) (err error) {
+	_ = store.cloud.Query("INSERT INTO projects VALUES ($1)", p)
+	return err
+}
+
+//Comments
+
+func (store *dbStore) PostComment(p *models.Project) (err error) {
+	_ = store.cloud.Query("INSERT INTO projects VALUES ($1)", p)
+	return err
+}
+func (store *dbStore) GetComment(key string) (project *models.Project, err error) {
+	project = new(models.Project)
+
+	err = store.cloud.QueryRow(key).Scan(&project)
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return project, err
+
+}
+func (store *dbStore) GetAllComments() (project *models.Project, err error) {
+	project = new(models.Project)
+	key := "1"
+	err = store.cloud.QueryRow(key).Scan(&project)
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return project, err
+
+}
+func (store *dbStore) UpdateComment(key string) (project *models.Project, err error) {
+	project = new(models.Project)
+
+	err = store.cloud.QueryRow(key).Scan(&project)
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return project, err
+
+}
+func (store *dbStore) DeleteComment(p *models.Project) (err error) {
+	_ = store.cloud.Query("INSERT INTO projects VALUES ($1)", p)
+	return err
 }
