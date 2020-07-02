@@ -9,11 +9,6 @@ import (
 
 //Storer is interface for database operations
 type Storer interface {
-	Post(p *models.Project)
-	Get(id string)
-	GetAll()
-	Update(id string, p *models.Project)
-	Delete(id string)
 }
 
 //Controller is struct that has core functionality of the app

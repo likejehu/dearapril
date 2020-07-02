@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 //Project must contain at least one column
 type Project struct {
 	ID          int
@@ -10,7 +12,9 @@ type Project struct {
 
 // Column is manageble by user
 type Column struct {
-	Status string
+	ID       int
+	Name     string
+	Position int
 	Tasks
 }
 
@@ -21,8 +25,10 @@ type Columns struct {
 
 // Task can be created only within a Column
 type Task struct {
+	ID          int
 	Name        string
 	Description string
+	Position    int
 	Comments
 }
 
@@ -33,7 +39,10 @@ type Tasks struct {
 
 // Comment can be created only within a Task
 type Comment struct {
+	ID   int
+	Name string
 	Text string
+	Date time.Time
 }
 
 // Comments is struct to store comments within map
