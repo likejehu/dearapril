@@ -9,6 +9,29 @@ import (
 
 //Storer is interface for database operations
 type Storer interface {
+	CreateProject(project *models.Project) (err error)
+	GetProject(id int) (project *models.Project, err error)
+	GetAllProjects() (projects []*models.Project, err error)
+	UpdateProject(id int, project *models.Project) (err error)
+	DeleteProject(id int) (err error)
+
+	CreateColumn(column *models.Column) (err error)
+	GetColumn(id int) (column *models.Column, err error)
+	GetAllColumns() (columns []*models.Column, err error)
+	UpdateColumn(id int, column *models.Column) (err error)
+	DeleteColumn(id int) (err error)
+
+	CreateTask(task *models.Task) (err error)
+	GetTask(id int) (task *models.Task, err error)
+	GetAllTasks() (tasks []*models.Task, err error)
+	UpdateTask(id int, task *models.Task) (err error)
+	DeleteTask(id int) (err error)
+
+	CreateComment(comment *models.Comment) (err error)
+	GetComment(id int) (comment *models.Comment, err error)
+	GetAllComments() (comments []*models.Comment, err error)
+	UpdateComment(id int, comment *models.Comment) (err error)
+	DeleteComment(id int) (err error)
 }
 
 //Controller is struct that has core functionality of the app
