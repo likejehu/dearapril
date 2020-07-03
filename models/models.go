@@ -14,7 +14,7 @@ type Project struct {
 type Column struct {
 	ID       int
 	Name     string
-	Position int
+	Position string
 	Tasks
 }
 
@@ -28,7 +28,7 @@ type Task struct {
 	ID          int
 	Name        string
 	Description string
-	Position    int
+	Position    string
 	Comments
 }
 
