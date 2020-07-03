@@ -58,6 +58,11 @@ func (c *Controller) CreateProject(reqBody []byte) (p *models.Project, err error
 	p = new(models.Project)
 	json.Unmarshal(reqBody, &p)
 	c.Store.CreateProject(p)
+	c.Store.CreateColumn(col)
+
+	projid := 2
+	colid := 2
+	c.Store.CreateProjectColumns(projid, colid)
 	return p, nil
 }
 
@@ -86,12 +91,12 @@ func (c *Controller) DeleteProject(id int) (err error) {
 
 // CreateColumn  creates new Column
 func (c *Controller) CreateColumn(reqBody []byte) (col *models.Column, err error) {
-	proj := new(models.Project)
 	col = new(models.Column)
-	id := 2
+	proj := new(models.Project)
+	id := 1
 	proj.Cls[id] = col
 	json.Unmarshal(reqBody, &proj)
-	c.Store.CreateColumn(col)
+
 	return proj.Cls[id], nil
 }
 
@@ -142,6 +147,7 @@ func (c *Controller) UpdateTask(id int, reqBody []byte) (t *models.Task, err err
 
 	json.Unmarshal(reqBody, &t)
 	c.Store.UpdateTask(id, t)
+
 	return t, nil
 }
 
@@ -161,7 +167,15 @@ func (c *Controller) DeleteTask(id int) (err error) {
 
 // MoveTask  moves given Task to left/right (across the Columns) or up/down (to prioritize it)
 func (c *Controller) MoveTask(id int, direction string) (err error) {
+	col := new(models.Column)
+	t := new(models.Task)
 
+	json.Unmarshal(reqBody, &t)
+	c.Store.UpdateTask(id, t)
+	col.Tks[id] = t
+
+	colid := 2
+	c.Store.UpdateColumnTasks(colid, id)
 	return nil
 }
 
