@@ -20,7 +20,7 @@ type Column struct {
 
 // Columns is struct to store columns within map
 type Columns struct {
-	Cls map[string]*Column
+	Cls map[int]*Column
 }
 
 // Task can be created only within a Column
@@ -34,7 +34,7 @@ type Task struct {
 
 // Tasks is struct to store tasks within map
 type Tasks struct {
-	Tks map[string]*Task
+	Tks map[int]*Task
 }
 
 // Comment can be created only within a Task
@@ -47,5 +47,5 @@ type Comment struct {
 
 // Comments is struct to store comments within map
 type Comments struct {
-	Cms map[string]*Comment
+	Cms map[int]*Comment
 }
