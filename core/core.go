@@ -58,6 +58,7 @@ func (c *Controller) CreateProject(reqBody []byte) (p *models.Project, err error
 	p = new(models.Project)
 	json.Unmarshal(reqBody, &p)
 	c.Store.CreateProject(p)
+	col := new(models.Column)
 	c.Store.CreateColumn(col)
 
 	projid := 2
@@ -126,7 +127,10 @@ func (c *Controller) DeleteColumn(id int) (err error) {
 }
 
 // MoveColumn  moves given Column to left or right
-func (c *Controller) MoveColumn(id int, direction string) (err error) {
+func (c *Controller) MoveColumn(id int, reqBody []byte) (err error) {
+	col := new(models.Column)
+	json.Unmarshal(reqBody, &col)
+	c.Store.UpdateColumn(id, col)
 
 	return nil
 }
@@ -166,7 +170,7 @@ func (c *Controller) DeleteTask(id int) (err error) {
 }
 
 // MoveTask  moves given Task to left/right (across the Columns) or up/down (to prioritize it)
-func (c *Controller) MoveTask(id int, direction string) (err error) {
+func (c *Controller) MoveTask(id int, reqBody []byte) (err error) {
 	col := new(models.Column)
 	t := new(models.Task)
 
