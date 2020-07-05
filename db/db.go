@@ -35,9 +35,12 @@ func connectDB() (err error) {
 
 //Projects
 
-func (store *dbStore) CreateProject(project *models.Project) (err error) {
-	_, err = store.db.Exec(`INSERT INTO projects (name, description) VALUES ($1, $2);`, project.Name, project.Description)
-	return err
+func (store *dbStore) CreateProject(project *models.Project) (id int, err error) {
+
+	res, err := store.db.Exec(`INSERT INTO projects (name, description) VALUES ($1, $2 );`, project.Name, project.Description)
+	lastid, err := res.LastInsertId()
+	id = int(lastid)
+	return id, err
 }
 func (store *dbStore) GetProject(id int) (project *models.Project, err error) {
 	project = new(models.Project)
@@ -103,9 +106,11 @@ func (store *dbStore) DeleteProject(id int) (err error) {
 
 //Columns
 
-func (store *dbStore) CreateColumn(column *models.Column) (err error) {
-	_, err = store.db.Exec(`INSERT INTO columns (name, position) VALUES ($1, $2);`, column.Name, column.Position)
-	return err
+func (store *dbStore) CreateColumn(column *models.Column) (id int, err error) {
+	res, err := store.db.Exec(`INSERT INTO columns (name, position) VALUES ($1, $2);`, column.Name, column.Position)
+	lastid, err := res.LastInsertId()
+	id = int(lastid)
+	return id, err
 
 }
 func (store *dbStore) GetColumn(id int) (column *models.Column, err error) {

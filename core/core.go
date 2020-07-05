@@ -9,13 +9,13 @@ import (
 
 //Storer is interface for database operations
 type Storer interface {
-	CreateProject(project *models.Project) (err error)
+	CreateProject(project *models.Project) (id int, err error)
 	GetProject(id int) (project *models.Project, err error)
 	GetAllProjects() (projects []*models.Project, err error)
 	UpdateProject(id int, project *models.Project) (err error)
 	DeleteProject(id int) (err error)
 
-	CreateColumn(column *models.Column) (err error)
+	CreateColumn(column *models.Column) (id int, err error)
 	GetColumn(id int) (column *models.Column, err error)
 	GetAllColumns() (columns []*models.Column, err error)
 	UpdateColumn(id int, column *models.Column) (err error)
@@ -32,6 +32,8 @@ type Storer interface {
 	GetAllComments() (comments []*models.Comment, err error)
 	UpdateComment(id int, comment *models.Comment) (err error)
 	DeleteComment(id int) (err error)
+
+	CreateProjectColumns(projid int, colid int) (err error)
 }
 
 //Controller is struct that has core functionality of the app
@@ -57,12 +59,10 @@ func (c *Controller) ReadProjects() (p []*models.Project, err error) {
 func (c *Controller) CreateProject(reqBody []byte) (p *models.Project, err error) {
 	p = new(models.Project)
 	json.Unmarshal(reqBody, &p)
-	c.Store.CreateProject(p)
+	projid, _ := c.Store.CreateProject(p)
 	col := new(models.Column)
-	c.Store.CreateColumn(col)
+	colid, _ := c.Store.CreateColumn(col)
 
-	projid := 2
-	colid := 2
 	c.Store.CreateProjectColumns(projid, colid)
 	return p, nil
 }
