@@ -307,3 +307,28 @@ func (store *dbStore) DeleteComment(id int) (err error) {
 	}
 	return err
 }
+
+//Connections
+
+func (store *dbStore) CreateProjectColumns(projid int, colid int) (err error) {
+	_, err = store.db.Exec(`INSERT INTO projects_columns (project_id, column_id) VALUES ($1, $2);`, projid, colid)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return err
+}
+func (store *dbStore) CreateColumnTasks(taskid int, colid int) (err error) {
+	_, err = store.db.Exec(`INSERT INTO columns_tasks (column_id, task_id) VALUES ($1, $2);`, colid, taskid)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return err
+}
+
+func (store *dbStore) CreateTaskComments(taskid int, comid int) (err error) {
+	_, err = store.db.Exec(`INSERT INTO tasks_comments (task_id, comment_id) VALUES ($1, $2);`, taskid, comid)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return err
+}
