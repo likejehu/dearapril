@@ -36,6 +36,8 @@ type Storer interface {
 	CreateProjectColumns(projid int, colid int) (err error)
 	CreateColumnTasks(taskid int, colid int) (err error)
 	CreateTaskComments(taskid int, comid int) (err error)
+
+	UpdateColumnTasks(colid int, taskid int) (err error)
 }
 
 //Controller is struct that has core functionality of the app
@@ -96,7 +98,6 @@ func (c *Controller) DeleteProject(id int) (err error) {
 func (c *Controller) CreateColumn(reqBody []byte) (col *models.Column, err error) {
 	col = new(models.Column)
 	proj := new(models.Project)
-	id := 1
 
 	json.Unmarshal(reqBody, &proj)
 
@@ -172,15 +173,9 @@ func (c *Controller) DeleteTask(id int) (err error) {
 }
 
 // MoveTask  moves given Task to left/right (across the Columns) or up/down (to prioritize it)
-func (c *Controller) MoveTask(id int, reqBody []byte) (err error) {
-	col := new(models.Column)
-	t := new(models.Task)
+func (c *Controller) MoveTask(colid, taskid int, reqBody []byte) (err error) {
 
-	json.Unmarshal(reqBody, &t)
-	c.Store.UpdateTask(id, t)
-
-	colid := 2
-	c.Store.UpdateColumnTasks(colid, id)
+	c.Store.UpdateColumnTasks(colid, taskid)
 	return nil
 }
 

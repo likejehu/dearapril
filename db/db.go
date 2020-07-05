@@ -337,3 +337,14 @@ func (store *dbStore) CreateTaskComments(taskid int, comid int) (err error) {
 	}
 	return err
 }
+func (store *dbStore) UpdateColumnTasks(colid int, taskid int) (err error) {
+	_, err = store.db.Exec(`UPDATE columns_tasks SET column_id = $1 task_id = $2;`, colid, taskid)
+
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return err
+}
