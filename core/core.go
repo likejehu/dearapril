@@ -178,19 +178,16 @@ func (c *Controller) MoveTaskUpDown(taskid int, t *models.Task) (err error) {
 
 //COMMENTS
 
-// CreateComment  creates new Task
-func (c *Controller) CreateComment(reqBody []byte) (com *models.Comment, err error) {
-	com = new(models.Comment)
-	json.Unmarshal(reqBody, &c)
-	c.Store.CreateComment(com)
-	return com, nil
+// CreateComment  creates new Comment
+func (c *Controller) CreateComment(com *models.Comment, taskid int) (comid int, err error) {
+	comid, _ = c.Store.CreateComment(com)
+	c.Store.CreateTaskComments(taskid, comid)
+	return comid, nil
 }
 
 // UpdateComment   updates properties of  given Comment
-func (c *Controller) UpdateComment(id int, reqBody []byte) (err error) {
-	com := new(models.Comment)
+func (c *Controller) UpdateComment(id int, com *models.Comment) (err error) {
 
-	json.Unmarshal(reqBody, &com)
 	c.Store.UpdateComment(id, com)
 	return nil
 }
