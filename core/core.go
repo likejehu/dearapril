@@ -21,13 +21,13 @@ type Storer interface {
 	UpdateColumn(id int, column *models.Column) (err error)
 	DeleteColumn(id int) (err error)
 
-	CreateTask(task *models.Task) (err error)
+	CreateTask(task *models.Task) (id int, err error)
 	GetTask(id int) (task *models.Task, err error)
 	GetAllTasks() (tasks []*models.Task, err error)
 	UpdateTask(id int, task *models.Task) (err error)
 	DeleteTask(id int) (err error)
 
-	CreateComment(comment *models.Comment) (err error)
+	CreateComment(comment *models.Comment) (id int, err error)
 	GetComment(id int) (comment *models.Comment, err error)
 	GetAllComments() (comments []*models.Comment, err error)
 	UpdateComment(id int, comment *models.Comment) (err error)
@@ -60,23 +60,21 @@ func (c *Controller) ReadProjects() (p []*models.Project, err error) {
 }
 
 // CreateProject  creates new project
-func (c *Controller) CreateProject(reqBody []byte) (p *models.Project, err error) {
-	p = new(models.Project)
-	json.Unmarshal(reqBody, &p)
-	projid, _ := c.Store.CreateProject(p)
+func (c *Controller) CreateProject(p *models.Project) (projid int, err error) {
+
+	projid, _ = c.Store.CreateProject(p)
 	col := new(models.Column)
 	colid, _ := c.Store.CreateColumn(col)
 
 	c.Store.CreateProjectColumns(projid, colid)
-	return p, nil
+	return projid, nil
 }
 
 // UpdateProject  updates properties of  given project
-func (c *Controller) UpdateProject(id int, reqBody []byte) (p *models.Project, err error) {
-	p = new(models.Project)
-	json.Unmarshal(reqBody, &p)
+func (c *Controller) UpdateProject(id int, p *models.Project) (err error) {
+
 	c.Store.UpdateProject(id, p)
-	return p, nil
+	return nil
 }
 
 // ReadProject  gets given project
@@ -95,23 +93,17 @@ func (c *Controller) DeleteProject(id int) (err error) {
 //COLUMNS
 
 // CreateColumn  creates new Column
-func (c *Controller) CreateColumn(reqBody []byte) (col *models.Column, err error) {
-	col = new(models.Column)
-	proj := new(models.Project)
-
-	json.Unmarshal(reqBody, &proj)
-
-	return col, nil
+func (c *Controller) CreateColumn(col *models.Column, projid int) (colid int, err error) {
+	colid, _ = c.Store.CreateColumn(col)
+	c.Store.CreateProjectColumns(projid, colid)
+	return colid, nil
 }
 
 // UpdateColumn  updates properties of  given Column
-func (c *Controller) UpdateColumn(id int, reqBody []byte) (col *models.Column, err error) {
-	proj := new(models.Project)
-	col = new(models.Column)
+func (c *Controller) UpdateColumn(id int, col *models.Column) (colid int, err error) {
 
-	json.Unmarshal(reqBody, &proj)
 	c.Store.UpdateColumn(id, col)
-	return col, nil
+	return colid, nil
 }
 
 // ReadColumn  gets given Column
@@ -141,21 +133,19 @@ func (c *Controller) MoveColumn(id int, reqBody []byte) (err error) {
 //TASKS
 
 // CreateTask  creates new Task
-func (c *Controller) CreateTask(reqBody []byte) (t *models.Task, err error) {
-	t = new(models.Task)
-	json.Unmarshal(reqBody, &t)
-	c.Store.CreateTask(t)
-	return t, nil
+func (c *Controller) CreateTask(t *models.Task, colid int) (taskid int, err error) {
+
+	taskid, _ = c.Store.CreateTask(t)
+	c.Store.CreateColumnTasks(colid, taskid)
+	return taskid, nil
 }
 
 // UpdateTask  updates properties of  given Task
-func (c *Controller) UpdateTask(id int, reqBody []byte) (t *models.Task, err error) {
-	t = new(models.Task)
+func (c *Controller) UpdateTask(id int, t *models.Task) (err error) {
 
-	json.Unmarshal(reqBody, &t)
 	c.Store.UpdateTask(id, t)
 
-	return t, nil
+	return nil
 }
 
 // ReadTask  gets given Task
@@ -172,10 +162,17 @@ func (c *Controller) DeleteTask(id int) (err error) {
 	return nil
 }
 
-// MoveTask  moves given Task to left/right (across the Columns) or up/down (to prioritize it)
-func (c *Controller) MoveTask(colid, taskid int, reqBody []byte) (err error) {
+// MoveTaskToColumn  moves given Task to left/right (across the Columns) or up/down (to prioritize it)
+func (c *Controller) MoveTaskToColumn(colid, taskid int, reqBody []byte) (err error) {
 
 	c.Store.UpdateColumnTasks(colid, taskid)
+	return nil
+}
+
+// MoveTaskUpDown  moves given Task to left/right (across the Columns) or up/down (to prioritize it)
+func (c *Controller) MoveTaskUpDown(taskid int, t *models.Task) (err error) {
+
+	c.Store.UpdateTask(taskid, t)
 	return nil
 }
 

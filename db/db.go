@@ -177,9 +177,11 @@ func (store *dbStore) DeleteColumn(id int) (err error) {
 
 //Tasks
 
-func (store *dbStore) CreateTask(task *models.Task) (err error) {
-	_, err = store.db.Exec(`INSERT INTO tasks (name, description, position) VALUES ($1, $2, $3);`, task.Name, task.Description, task.Position)
-	return err
+func (store *dbStore) CreateTask(task *models.Task) (id int, err error) {
+	res, err := store.db.Exec(`INSERT INTO tasks (name, description, position) VALUES ($1, $2, $3);`, task.Name, task.Description, task.Position)
+	lastid, err := res.LastInsertId()
+	id = int(lastid)
+	return id, err
 
 }
 func (store *dbStore) GetTask(id int) (task *models.Task, err error) {
