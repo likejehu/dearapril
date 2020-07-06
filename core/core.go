@@ -92,6 +92,13 @@ func (c *Controller) DeleteProject(id int) (err error) {
 
 //COLUMNS
 
+// ReadColumns  gets all the Columns
+func (c *Controller) ReadColumns() (col []*models.Column, err error) {
+
+	col, err = c.Store.GetAllColumns()
+	return col, err
+}
+
 // CreateColumn  creates new Column
 func (c *Controller) CreateColumn(col *models.Column, projid int) (colid int, err error) {
 	colid, _ = c.Store.CreateColumn(col)
@@ -131,6 +138,13 @@ func (c *Controller) MoveColumn(id int, reqBody []byte) (err error) {
 }
 
 //TASKS
+
+// ReadTasks  gets all the Tasks
+func (c *Controller) ReadTasks() (tasks []*models.Task, err error) {
+
+	tasks, err = c.Store.GetAllTasks()
+	return tasks, err
+}
 
 // CreateTask  creates new Task
 func (c *Controller) CreateTask(t *models.Task, colid int) (taskid int, err error) {
@@ -177,6 +191,13 @@ func (c *Controller) MoveTaskUpDown(taskid int, t *models.Task) (err error) {
 }
 
 //COMMENTS
+
+// ReadComments  gets all the Comments
+func (c *Controller) ReadComments() (com []*models.Comment, err error) {
+
+	com, err = c.Store.GetAllComments()
+	return com, err
+}
 
 // CreateComment  creates new Comment
 func (c *Controller) CreateComment(com *models.Comment, taskid int) (comid int, err error) {

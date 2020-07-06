@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -25,15 +24,19 @@ type AppController interface {
 	ReadColumn(id int) (col *models.Column, err error)
 	UpdateColumn(id int, col *models.Column) (colid int, err error)
 	DeleteColumn(id int) (err error)
+	ReadColumns() (col []*models.Column, err error)
 
 	CreateTask(t *models.Task, colid int) (taskid int, err error)
 	ReadTask(id int) (t *models.Task, err error)
 	UpdateTask(id int, t *models.Task)
 	DeleteTask(id int) (err error)
+	ReadTasks() (tasks []*models.Task, err error)
 
 	CreateComment(com *models.Comment, taskid int) (comid int, err error)
 	ReadComment(id int) (com *models.Comment, err error)
 	UpdateComment(id int, com *models.Comment)
+	DeleteComment(id int) (err error)
+	ReadComments() (com []*models.Comment, err error)
 }
 
 // Handler is struct for handlers
@@ -97,6 +100,14 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+// GetAllColumns gets all the columns
+func (h *Handler) GetAllColumns(w http.ResponseWriter, r *http.Request) (columns []*models.Column, err error) {
+	columns, err = h.App.ReadColumns()
+	w.WriteHeader(http.StatusOK)
+	return columns, err
+
+}
+
 // CreateColumn is for creating a new Column
 func (h *Handler) CreateColumn(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
@@ -147,6 +158,14 @@ func (h *Handler) DeleteColumn(w http.ResponseWriter, r *http.Request) {
 	h.App.DeleteColumn(columnID)
 	w.WriteHeader(http.StatusNoContent)
 	return
+}
+
+// GetAllTasks gets all the Tasks
+func (h *Handler) GetAllTasks(w http.ResponseWriter, r *http.Request) (tasks []*models.Task, err error) {
+	tasks, err = h.App.ReadTasks()
+	w.WriteHeader(http.StatusOK)
+	return tasks, err
+
 }
 
 // CreateTask is for creating a new Task
@@ -201,6 +220,14 @@ func (h *Handler) DeleteTask(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+// GetAllComments gets all the Comments
+func (h *Handler) GetAllComments(w http.ResponseWriter, r *http.Request) (comments []*models.Comment, err error) {
+	comments, err = h.App.ReadComments()
+	w.WriteHeader(http.StatusOK)
+	return comments, err
+
+}
+
 // CreateComment is for creating a new Comment
 func (h *Handler) CreateComment(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
@@ -245,8 +272,9 @@ func (h *Handler) UpdateComment(w http.ResponseWriter, r *http.Request) {
 
 // DeleteComment is for deleting a Comment
 func (h *Handler) DeleteComment(w http.ResponseWriter, r *http.Request) {
-	commentID := chi.URLParam(r, "commentid") // getting id of comment from the route
-	fmt.Println("comment deleted!", commentID)
+	comID := chi.URLParam(r, "commentid") // getting id of comment from the route
+	commentID, _ := strconv.Atoi(comID)
+	h.App.DeleteComment(commentID)
 	w.WriteHeader(http.StatusNoContent)
 	return
 }
