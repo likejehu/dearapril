@@ -29,13 +29,13 @@ type AppController interface {
 
 	CreateTask(t *models.Task, colid int) (taskid int, err error)
 	ReadTask(id int) (t *models.Task, err error)
-	UpdateTask(id int, t *models.Task)
+	UpdateTask(id int, t *models.Task) (err error)
 	DeleteTask(id int) (err error)
 	ReadTasks() (tasks []*models.Task, err error)
 
 	CreateComment(com *models.Comment, taskid int) (comid int, err error)
 	ReadComment(id int) (com *models.Comment, err error)
-	UpdateComment(id int, com *models.Comment)
+	UpdateComment(id int, com *models.Comment) (err error)
 	DeleteComment(id int) (err error)
 	ReadComments() (com []*models.Comment, err error)
 }
@@ -46,10 +46,20 @@ type Handler struct {
 }
 
 // GetAllProjects gets all the projets
-func (h *Handler) GetAllProjects(w http.ResponseWriter, r *http.Request) (projects []*models.Project, err error) {
-	projects, err = h.App.ReadProjects()
+func (h *Handler) GetAllProjects(w http.ResponseWriter, r *http.Request) {
+	projects, err := h.App.ReadProjects()
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	js, err := json.Marshal(projects)
+	if err != nil {
+		log.Print(err)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
-	return projects, err
+	w.Write(js)
+	return
 
 }
 

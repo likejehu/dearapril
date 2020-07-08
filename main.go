@@ -6,11 +6,14 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/likejehu/dearapril/core"
+	"github.com/likejehu/dearapril/db"
 	"github.com/likejehu/dearapril/handlers"
 )
 
 func main() {
-	handler := handlers.Handler{}
+	appController := core.Controller{&db.Store}
+	handler := handlers.Handler{&appController}
 	r := chi.NewRouter()
 	//middleware
 	r.Use(middleware.Logger)

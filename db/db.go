@@ -248,9 +248,11 @@ func (store *dbStore) DeleteTask(id int) (err error) {
 
 //Comments
 
-func (store *dbStore) CreateComment(comment *models.Comment) (err error) {
-	_, err = store.db.Exec(`INSERT INTO comments (name, text, date) VALUES ($1, $2, $3);`, comment.Name, comment.Text, comment.Date)
-	return err
+func (store *dbStore) CreateComment(comment *models.Comment) (id int, err error) {
+	res, err := store.db.Exec(`INSERT INTO comments (name, text, date) VALUES ($1, $2, $3);`, comment.Name, comment.Text, comment.Date)
+	lastid, err := res.LastInsertId()
+	id = int(lastid)
+	return id, err
 
 }
 func (store *dbStore) GetComment(id int) (comment *models.Comment, err error) {
