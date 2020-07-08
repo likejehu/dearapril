@@ -1,7 +1,6 @@
 package core
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/likejehu/dearapril/models"
@@ -129,9 +128,8 @@ func (c *Controller) DeleteColumn(id int) (err error) {
 }
 
 // MoveColumn  moves given Column to left or right
-func (c *Controller) MoveColumn(id int, reqBody []byte) (err error) {
-	col := new(models.Column)
-	json.Unmarshal(reqBody, &col)
+func (c *Controller) MoveColumn(id int, col *models.Column) (err error) {
+
 	c.Store.UpdateColumn(id, col)
 
 	return nil
@@ -176,14 +174,14 @@ func (c *Controller) DeleteTask(id int) (err error) {
 	return nil
 }
 
-// MoveTaskToColumn  moves given Task to left/right (across the Columns) or up/down (to prioritize it)
-func (c *Controller) MoveTaskToColumn(colid, taskid int, reqBody []byte) (err error) {
+// MoveTaskToColumn  moves given Task to left/right (across the Columns)
+func (c *Controller) MoveTaskToColumn(colid, taskid int) (err error) {
 
 	c.Store.UpdateColumnTasks(colid, taskid)
 	return nil
 }
 
-// MoveTaskUpDown  moves given Task to left/right (across the Columns) or up/down (to prioritize it)
+// MoveTaskUpDown  moves given Task  up/down (to prioritize it)
 func (c *Controller) MoveTaskUpDown(taskid int, t *models.Task) (err error) {
 
 	c.Store.UpdateTask(taskid, t)
