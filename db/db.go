@@ -249,7 +249,7 @@ func (store *dbStore) DeleteTask(id int) (err error) {
 //Comments
 
 func (store *dbStore) CreateComment(comment *models.Comment) (id int, err error) {
-	res, err := store.db.Exec(`INSERT INTO comments (name, text, date) VALUES ($1, $2, $3);`, comment.Name, comment.Text, comment.Date)
+	res, err := store.db.Exec(`INSERT INTO comments (text, date) VALUES ($1, $2);`, comment.Text, comment.Date)
 	lastid, err := res.LastInsertId()
 	id = int(lastid)
 	return id, err
@@ -258,7 +258,7 @@ func (store *dbStore) CreateComment(comment *models.Comment) (id int, err error)
 func (store *dbStore) GetComment(id int) (comment *models.Comment, err error) {
 	comment = new(models.Comment)
 
-	err = store.db.QueryRow(`SELECT id, name, text, date FROM comments WHERE id=$1;`, id).Scan(&comment)
+	err = store.db.QueryRow(`SELECT id, text, date FROM comments WHERE id=$1;`, id).Scan(&comment)
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
 	}
@@ -271,7 +271,7 @@ func (store *dbStore) GetComment(id int) (comment *models.Comment, err error) {
 func (store *dbStore) GetAllComments() (comments []*models.Comment, err error) {
 
 	comments = []*models.Comment{}
-	rows, err := store.db.Query(`SELECT id,  name, description, position  FROM comments;`)
+	rows, err := store.db.Query(`SELECT id,  text, date  FROM comments;`)
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
 	}
@@ -281,7 +281,7 @@ func (store *dbStore) GetAllComments() (comments []*models.Comment, err error) {
 	defer rows.Close()
 	for rows.Next() {
 		comment := new(models.Comment)
-		err = rows.Scan(&comment.ID, &comment.Name, &comment.Text, &comment.Date)
+		err = rows.Scan(&comment.ID, &comment.Text, &comment.Date)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -298,7 +298,7 @@ func (store *dbStore) GetAllComments() (comments []*models.Comment, err error) {
 }
 func (store *dbStore) UpdateComment(id int, comment *models.Comment) (err error) {
 
-	_, err = store.db.Exec(`UPDATE comments SET name = $2 description = $3 position =$4 WHERE id = $1;`, id, comment.Name, comment.Text, comment.Date)
+	_, err = store.db.Exec(`UPDATE comments SET text = $2 date = $3  WHERE id = $1;`, id, comment.Text, comment.Date)
 
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
