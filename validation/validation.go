@@ -4,17 +4,16 @@ import (
 	"fmt"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/likejehu/dearapril/models"
 )
 
 // Validate use a single instance of Validate, it caches struct info
-var validate *validator.Validate
+var Validate *validator.Validate
 
 // ValidateStruct is for validating the struct
-func ValidateStruct(p *models.Project) {
-	validate = validator.New()
+func ValidateStruct(s interface{}) {
+	Validate = validator.New()
 	// returns nil or ValidationErrors ( []FieldError )
-	err := validate.Struct(p)
+	err := Validate.Struct(s)
 	if err != nil {
 
 		// this check is only needed when your code could produce
@@ -44,5 +43,4 @@ func ValidateStruct(p *models.Project) {
 		return
 	}
 
-	// save user to database
 }

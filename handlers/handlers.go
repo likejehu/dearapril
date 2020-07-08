@@ -9,6 +9,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/likejehu/dearapril/models"
+	"github.com/likejehu/dearapril/validation"
 )
 
 // AppController is interface for main logic
@@ -57,6 +58,7 @@ func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	p := new(models.Project)
 	json.Unmarshal(reqBody, &p)
+	validation.ValidateStruct(p)
 	h.App.CreateProject(p)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -83,6 +85,7 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	p := new(models.Project)
 	json.Unmarshal(reqBody, &p)
+	validation.ValidateStruct(p)
 	projectID, _ := strconv.Atoi(pID)
 	h.App.UpdateProject(projectID, p)
 
@@ -114,6 +117,7 @@ func (h *Handler) CreateColumn(w http.ResponseWriter, r *http.Request) {
 	pID := chi.URLParam(r, "projectid") // getting id of column from the route
 	c := new(models.Column)
 	json.Unmarshal(reqBody, &c)
+	validation.ValidateStruct(c)
 	projectID, _ := strconv.Atoi(pID)
 	h.App.CreateColumn(c, projectID)
 	w.Header().Set("Content-Type", "application/json")
@@ -143,9 +147,8 @@ func (h *Handler) UpdateColumn(w http.ResponseWriter, r *http.Request) {
 	columnID, _ := strconv.Atoi(cID)
 	c := new(models.Column)
 	json.Unmarshal(reqBody, &c)
-
+	validation.ValidateStruct(c)
 	h.App.UpdateColumn(columnID, c)
-
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	return
@@ -174,6 +177,7 @@ func (h *Handler) CreateTask(w http.ResponseWriter, r *http.Request) {
 	cID := chi.URLParam(r, "columnid") // getting id of column from the route
 	t := new(models.Task)
 	json.Unmarshal(reqBody, &t)
+	validation.ValidateStruct(t)
 	columnID, _ := strconv.Atoi(cID)
 	h.App.CreateTask(t, columnID)
 	w.Header().Set("Content-Type", "application/json")
@@ -202,10 +206,9 @@ func (h *Handler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 	taskID, _ := strconv.Atoi(tID)
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	t := new(models.Task)
-
 	json.Unmarshal(reqBody, &t)
+	validation.ValidateStruct(t)
 	h.App.UpdateTask(taskID, t)
-
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	return
@@ -235,6 +238,7 @@ func (h *Handler) CreateComment(w http.ResponseWriter, r *http.Request) {
 	commentID, _ := strconv.Atoi(comID)
 	com := new(models.Comment)
 	json.Unmarshal(reqBody, &com)
+	validation.ValidateStruct(com)
 	h.App.CreateComment(com, commentID)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -262,8 +266,8 @@ func (h *Handler) UpdateComment(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	com := new(models.Comment)
 	json.Unmarshal(reqBody, &com)
+	validation.ValidateStruct(com)
 	h.App.UpdateComment(commentID, com)
-
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	return
