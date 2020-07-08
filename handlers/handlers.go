@@ -76,17 +76,24 @@ func (h *Handler) CreateProject(w http.ResponseWriter, r *http.Request) {
 }
 
 // ReadProject is for reading a new project
-func (h *Handler) ReadProject(w http.ResponseWriter, r *http.Request) (p *models.Project, err error) {
+func (h *Handler) ReadProject(w http.ResponseWriter, r *http.Request) {
 	pID := chi.URLParam(r, "projectid") // getting id of project from the route
 	projectID, _ := strconv.Atoi(pID)
-	p, err = h.App.ReadProject(projectID)
+	p, err := h.App.ReadProject(projectID)
 	if err != nil {
 		log.Println(err)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
+	js, err := json.Marshal(p)
+	if err != nil {
+		log.Print(err)
+		return
+	}
+
+	w.Write(js)
 	w.WriteHeader(http.StatusOK)
-	return p, err
+	return
 }
 
 // UpdateProject is for updating a new project
@@ -114,10 +121,16 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetAllColumns gets all the columns
-func (h *Handler) GetAllColumns(w http.ResponseWriter, r *http.Request) (columns []*models.Column, err error) {
-	columns, err = h.App.ReadColumns()
+func (h *Handler) GetAllColumns(w http.ResponseWriter, r *http.Request) {
+	columns, err := h.App.ReadColumns()
+	js, err := json.Marshal(columns)
+	if err != nil {
+		log.Print(err)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
-	return columns, err
+	w.Write(js)
+	return
 
 }
 
@@ -136,18 +149,23 @@ func (h *Handler) CreateColumn(w http.ResponseWriter, r *http.Request) {
 }
 
 // ReadColumn is for reading a  Column
-func (h *Handler) ReadColumn(w http.ResponseWriter, r *http.Request) (c *models.Column, err error) {
+func (h *Handler) ReadColumn(w http.ResponseWriter, r *http.Request) {
 	cID := chi.URLParam(r, "columnid") // getting id of column from the route
 	columnID, _ := strconv.Atoi(cID)
-	c, err = h.App.ReadColumn(columnID)
+	c, err := h.App.ReadColumn(columnID)
 	if err != nil {
 		log.Println(err)
 		return
 	}
+	js, err := json.Marshal(c)
+	if err != nil {
+		log.Print(err)
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
-
 	w.WriteHeader(http.StatusOK)
-	return c, err
+	w.Write(js)
+	return
 }
 
 // UpdateColumn is for updating a Column
@@ -174,10 +192,17 @@ func (h *Handler) DeleteColumn(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetAllTasks gets all the Tasks
-func (h *Handler) GetAllTasks(w http.ResponseWriter, r *http.Request) (tasks []*models.Task, err error) {
-	tasks, err = h.App.ReadTasks()
+func (h *Handler) GetAllTasks(w http.ResponseWriter, r *http.Request) {
+	tasks, err := h.App.ReadTasks()
+	js, err := json.Marshal(tasks)
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	return tasks, err
+	w.Write(js)
+	return
 
 }
 
@@ -196,18 +221,23 @@ func (h *Handler) CreateTask(w http.ResponseWriter, r *http.Request) {
 }
 
 // ReadTask is for reading a  Task
-func (h *Handler) ReadTask(w http.ResponseWriter, r *http.Request) (t *models.Task, err error) {
+func (h *Handler) ReadTask(w http.ResponseWriter, r *http.Request) {
 	tID := chi.URLParam(r, "taskid") // getting id of Task from the route
 	taskID, _ := strconv.Atoi(tID)
-	t, err = h.App.ReadTask(taskID)
+	t, err := h.App.ReadTask(taskID)
 	if err != nil {
 		log.Println(err)
 		return
 	}
+	js, err := json.Marshal(t)
+	if err != nil {
+		log.Print(err)
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
-
 	w.WriteHeader(http.StatusOK)
-	return t, err
+	w.Write(js)
+	return
 }
 
 // UpdateTask is for updating a Task
@@ -234,10 +264,17 @@ func (h *Handler) DeleteTask(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetAllComments gets all the Comments
-func (h *Handler) GetAllComments(w http.ResponseWriter, r *http.Request) (comments []*models.Comment, err error) {
-	comments, err = h.App.ReadComments()
+func (h *Handler) GetAllComments(w http.ResponseWriter, r *http.Request) {
+	comments, err := h.App.ReadComments()
+	js, err := json.Marshal(comments)
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	return comments, err
+	w.Write(js)
+	return
 
 }
 
@@ -256,17 +293,23 @@ func (h *Handler) CreateComment(w http.ResponseWriter, r *http.Request) {
 }
 
 // ReadComment is for reading a  Comment
-func (h *Handler) ReadComment(w http.ResponseWriter, r *http.Request) (com *models.Comment, err error) {
+func (h *Handler) ReadComment(w http.ResponseWriter, r *http.Request) {
 	comID := chi.URLParam(r, "commentid") // getting id of Comment from the route
 	commentID, _ := strconv.Atoi(comID)
-	com, err = h.App.ReadComment(commentID)
+	com, err := h.App.ReadComment(commentID)
 	if err != nil {
 		log.Println(err)
 		return
 	}
+	js, err := json.Marshal(com)
+	if err != nil {
+		log.Print(err)
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	return com, err
+	w.Write(js)
+	return
 }
 
 // UpdateComment is for updating a Comment
