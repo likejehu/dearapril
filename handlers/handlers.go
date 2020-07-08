@@ -57,6 +57,7 @@ func (h *Handler) GetAllProjects(w http.ResponseWriter, r *http.Request) {
 		log.Print(err)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(js)
 	return
@@ -90,7 +91,6 @@ func (h *Handler) ReadProject(w http.ResponseWriter, r *http.Request) {
 		log.Print(err)
 		return
 	}
-
 	w.Write(js)
 	w.WriteHeader(http.StatusOK)
 	return
@@ -105,7 +105,6 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 	validation.ValidateStruct(p)
 	projectID, _ := strconv.Atoi(pID)
 	h.App.UpdateProject(projectID, p)
-
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	return
@@ -128,6 +127,7 @@ func (h *Handler) GetAllColumns(w http.ResponseWriter, r *http.Request) {
 		log.Print(err)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(js)
 	return
