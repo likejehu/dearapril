@@ -14,7 +14,6 @@ import (
 
 // AppController is interface for main logic
 type AppController interface {
-	SayHello()
 	CreateProject(p *models.Project) (projid int, err error)
 	UpdateProject(id int, p *models.Project) (err error)
 	ReadProject(id int) (p *models.Project, err error)
@@ -190,6 +189,8 @@ func (h *Handler) DeleteColumn(w http.ResponseWriter, r *http.Request) {
 	cID := chi.URLParam(r, "columnid") // getting id of column from the route
 	columnID, _ := strconv.Atoi(cID)
 	h.App.DeleteColumn(columnID)
+	taskID := 1
+	h.App.MoveTaskToColumn(columnID, taskID)
 	w.WriteHeader(http.StatusNoContent)
 	return
 }
