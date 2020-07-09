@@ -33,6 +33,7 @@ type AppController interface {
 	UpdateTask(id int, t *models.Task) (err error)
 	DeleteTask(id int) (err error)
 	ReadTasks() (tasks []*models.Task, err error)
+	MoveTaskToColumn(colid, taskid int) (err error)
 
 	CreateComment(com *models.Comment, taskid int) (comid int, err error)
 	ReadComment(id int) (com *models.Comment, err error)
@@ -271,6 +272,18 @@ func (h *Handler) DeleteTask(w http.ResponseWriter, r *http.Request) {
 	taskID, _ := strconv.Atoi(tID)
 	h.App.DeleteTask(taskID)
 	w.WriteHeader(http.StatusNoContent)
+	return
+}
+
+// MoveTaskToColumn is for movin a Task across columns
+func (h *Handler) MoveTaskToColumn(w http.ResponseWriter, r *http.Request) {
+	tID := chi.URLParam(r, "taskid") // getting id of Task from the route
+	taskID, _ := strconv.Atoi(tID)
+	cID := chi.URLParam(r, "newcolumnid") // getting id new column from the route
+	columnID, _ := strconv.Atoi(cID)
+	h.App.MoveTaskToColumn(taskID, columnID)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	return
 }
 
