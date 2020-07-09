@@ -177,7 +177,7 @@ func (store *dbStore) DeleteColumn(id int) (err error) {
 
 func (store *dbStore) UpdateColumnPosition(id int, position string) (err error) {
 
-	_, err = store.db.Exec(`UPDATE columns SET name = $2 position =$3 WHERE id = $1;`, id, position)
+	_, err = store.db.Exec(`UPDATE columns SET position =$2 WHERE id = $1;`, id, position)
 
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
