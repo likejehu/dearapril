@@ -19,12 +19,14 @@ type Storer interface {
 	GetAllColumns() (columns []*models.Column, err error)
 	UpdateColumn(id int, column *models.Column) (err error)
 	DeleteColumn(id int) (err error)
+	UpdateColumnPosition(id int, position string) (err error)
 
 	CreateTask(task *models.Task) (id int, err error)
 	GetTask(id int) (task *models.Task, err error)
 	GetAllTasks() (tasks []*models.Task, err error)
 	UpdateTask(id int, task *models.Task) (err error)
 	DeleteTask(id int) (err error)
+	UpdateTaskPosition(id int, position string) (err error)
 
 	CreateComment(comment *models.Comment) (id int, err error)
 	GetComment(id int) (comment *models.Comment, err error)
@@ -123,14 +125,15 @@ func (c *Controller) ReadColumn(id int) (col *models.Column, err error) {
 // DeleteColumn  deletes given Column
 func (c *Controller) DeleteColumn(id int) (err error) {
 	c.Store.DeleteColumn(id)
-
+	newid := id - 1
+	c.Store.UpdateColumnTasks(id, newid)
 	return nil
 }
 
 // MoveColumn  moves given Column to left or right
-func (c *Controller) MoveColumn(id int, col *models.Column) (err error) {
+func (c *Controller) MoveColumn(id int, direction string) (err error) {
 
-	c.Store.UpdateColumn(id, col)
+	c.Store.UpdateColumnPosition(id, direction)
 
 	return nil
 }
@@ -182,9 +185,9 @@ func (c *Controller) MoveTaskToColumn(colid, taskid int) (err error) {
 }
 
 // MoveTaskUpDown  moves given Task  up/down (to prioritize it)
-func (c *Controller) MoveTaskUpDown(taskid int, t *models.Task) (err error) {
+func (c *Controller) MoveTaskUpDown(taskid int, direction string) (err error) {
 
-	c.Store.UpdateTask(taskid, t)
+	c.Store.UpdateTaskPosition(taskid, direction)
 	return nil
 }
 

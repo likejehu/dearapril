@@ -175,6 +175,20 @@ func (store *dbStore) DeleteColumn(id int) (err error) {
 	return err
 }
 
+func (store *dbStore) UpdateColumnPosition(id int, position string) (err error) {
+
+	_, err = store.db.Exec(`UPDATE columns SET name = $2 position =$3 WHERE id = $1;`, id, position)
+
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return err
+
+}
+
 //Tasks
 
 func (store *dbStore) CreateTask(task *models.Task) (id int, err error) {
@@ -244,6 +258,20 @@ func (store *dbStore) DeleteTask(id int) (err error) {
 		log.Fatal(err)
 	}
 	return err
+}
+
+func (store *dbStore) UpdateTaskPosition(id int, position string) (err error) {
+
+	_, err = store.db.Exec(`UPDATE tasks SET position = $2 WHERE id = $1;`, id, position)
+
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return err
+
 }
 
 //Comments
