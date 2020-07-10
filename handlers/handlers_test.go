@@ -201,6 +201,22 @@ func TestDeleteColumn(t *testing.T) {
 	})
 }
 
+func TestMoveColumn(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		req := httptest.NewRequest(http.MethodPatch, "/", nil)
+		rec := httptest.NewRecorder()
+
+		mockApp := mocks.AppController{}
+		mockApp.On("MoveColumn", mock.Anything, mock.Anything).Return(nil)
+		handler := &Handler{&mockApp}
+		handler.MoveColumn(rec, req)
+		mockApp.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, http.StatusOK, rec.Code)
+	})
+}
+
 //Tasks
 
 func TestGetAllTasks(t *testing.T) {
@@ -235,52 +251,50 @@ func TestCreateTask(t *testing.T) {
 	})
 }
 
-/*
-func TestReadProject(t *testing.T) {
+func TestReadTask(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
 
 		mockApp := mocks.AppController{}
-		mockApp.On("ReadProject", mock.Anything).Return(testProjectOne, nil)
+		mockApp.On("ReadTask", mock.Anything).Return(testTaskOne, nil)
 		handler := &Handler{&mockApp}
-		handler.ReadProject(rec, req)
+		handler.ReadTask(rec, req)
 		mockApp.AssertExpectations(t)
 		//assertions
 		assert.Equal(t, http.StatusOK, rec.Code)
 	})
 }
 
-func TestUpdateProject(t *testing.T) {
+func TestUpdateTask(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		//setup
-		req := httptest.NewRequest(http.MethodPatch, "/", strings.NewReader(projectJSON))
+		req := httptest.NewRequest(http.MethodPatch, "/", strings.NewReader(taskJSON))
 		rec := httptest.NewRecorder()
 
 		mockApp := mocks.AppController{}
-		mockApp.On("UpdateProject", mock.Anything, testProjectZero).Return(nil)
+		mockApp.On("UpdateTask", mock.Anything, testTaskOne).Return(nil)
 		handler := &Handler{&mockApp}
-		handler.UpdateProject(rec, req)
+		handler.UpdateTask(rec, req)
 		mockApp.AssertExpectations(t)
 		//assertions
 		assert.Equal(t, http.StatusOK, rec.Code)
 	})
 }
 
-func TestDeleteProject(t *testing.T) {
+func TestDeleteTask(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodDelete, "/", nil)
 		rec := httptest.NewRecorder()
 
 		mockApp := mocks.AppController{}
-		mockApp.On("DeleteProject", mock.Anything).Return(nil)
+		mockApp.On("DeleteTask", mock.Anything).Return(nil)
 		handler := &Handler{&mockApp}
-		handler.DeleteProject(rec, req)
+		handler.DeleteTask(rec, req)
 		mockApp.AssertExpectations(t)
 		//assertions
 		assert.Equal(t, http.StatusNoContent, rec.Code)
 	})
 }
-*/
