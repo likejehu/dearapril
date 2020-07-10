@@ -194,6 +194,20 @@ func (_m *AppController) MoveTaskUpDown(taskid int, next int) error {
 	return r0
 }
 
+// MoveTasksToColumn provides a mock function with given fields: colid, nextid
+func (_m *AppController) MoveTasksToColumn(colid int, nextid int) error {
+	ret := _m.Called(colid, nextid)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(int, int) error); ok {
+		r0 = rf(colid, nextid)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // ReadColumn provides a mock function with given fields: id
 func (_m *AppController) ReadColumn(id int) (*models.Column, error) {
 	ret := _m.Called(id)
@@ -379,24 +393,17 @@ func (_m *AppController) ReadTasks() ([]*models.Task, error) {
 }
 
 // UpdateColumn provides a mock function with given fields: id, col
-func (_m *AppController) UpdateColumn(id int, col *models.Column) (int, error) {
+func (_m *AppController) UpdateColumn(id int, col *models.Column) error {
 	ret := _m.Called(id, col)
 
-	var r0 int
-	if rf, ok := ret.Get(0).(func(int, *models.Column) int); ok {
+	var r0 error
+	if rf, ok := ret.Get(0).(func(int, *models.Column) error); ok {
 		r0 = rf(id, col)
 	} else {
-		r0 = ret.Get(0).(int)
+		r0 = ret.Error(0)
 	}
 
-	var r1 error
-	if rf, ok := ret.Get(1).(func(int, *models.Column) error); ok {
-		r1 = rf(id, col)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
+	return r0
 }
 
 // UpdateComment provides a mock function with given fields: id, com

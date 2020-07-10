@@ -188,6 +188,19 @@ func (store *dbStore) UpdateColumnPosition(id int, position int) (err error) {
 	return err
 
 }
+func (store *dbStore) CountColumns(id int, position int) (err error) {
+
+	_, err = store.db.Exec(`UPDATE columns SET position =$2 WHERE id = $1;`, id, position)
+
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return err
+
+}
 
 //Tasks
 

@@ -22,7 +22,7 @@ type AppController interface {
 
 	CreateColumn(col *models.Column, projid int) (colid int, err error)
 	ReadColumn(id int) (col *models.Column, err error)
-	UpdateColumn(id int, col *models.Column) (colid int, err error)
+	UpdateColumn(id int, col *models.Column) (err error)
 	DeleteColumn(id int) (err error)
 	ReadColumns() (col []*models.Column, err error)
 	MoveColumn(id int, next int) (err error)
@@ -32,6 +32,7 @@ type AppController interface {
 	UpdateTask(id int, t *models.Task) (err error)
 	DeleteTask(id int) (err error)
 	ReadTasks() (tasks []*models.Task, err error)
+	MoveTasksToColumn(colid, nextid int) (err error)
 	MoveTaskToColumn(colid, taskid int) (err error)
 	MoveTaskUpDown(taskid int, next int) (err error)
 
@@ -188,9 +189,10 @@ func (h *Handler) UpdateColumn(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) DeleteColumn(w http.ResponseWriter, r *http.Request) {
 	cID := chi.URLParam(r, "columnid") // getting id of column from the route
 	columnID, _ := strconv.Atoi(cID)
+	lID := chi.URLParam(r, "leftid") // getting id of left column from the route
+	leftID, _ := strconv.Atoi(lID)
+	h.App.MoveTasksToColumn(columnID, leftID)
 	h.App.DeleteColumn(columnID)
-	taskID := 1
-	h.App.MoveTaskToColumn(columnID, taskID)
 	w.WriteHeader(http.StatusNoContent)
 	return
 }

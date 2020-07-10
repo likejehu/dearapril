@@ -101,10 +101,10 @@ func (c *Controller) CreateColumn(col *models.Column, projid int) (colid int, er
 }
 
 // UpdateColumn  updates properties of  given Column
-func (c *Controller) UpdateColumn(id int, col *models.Column) (colid int, err error) {
+func (c *Controller) UpdateColumn(id int, col *models.Column) (err error) {
 
 	c.Store.UpdateColumn(id, col)
-	return colid, nil
+	return nil
 }
 
 // ReadColumn  gets given Column
