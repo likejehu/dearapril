@@ -1,7 +1,5 @@
 package models
 
-import "time"
-
 //Project must contain at least one column
 type Project struct {
 	ID          int    `json:"id"`
@@ -26,7 +24,7 @@ type Task struct {
 
 // Comment can be created only within a Task
 type Comment struct {
-	ID   int       `json:"id"`
-	Text string    `json:"text"  validate:"required,min=1,max=5000"`
-	Date time.Time `json:"date"`
+	ID   int    `json:"id"`
+	Text string `json:"text"  validate:"required,min=1,max=5000"`
+	Date string `json:"date"`
 }
