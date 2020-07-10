@@ -49,7 +49,6 @@ func TestGetAllProjects(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("ReadProjects").Return(testProjects, nil)
 		handler := &Handler{&mockApp}
@@ -65,7 +64,6 @@ func TestCreateProject(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(projectJSON))
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("CreateProject", testProjectZero).Return(1, nil)
 		handler := &Handler{&mockApp}
@@ -81,7 +79,6 @@ func TestReadProject(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("ReadProject", mock.Anything).Return(testProjectOne, nil)
 		handler := &Handler{&mockApp}
@@ -97,7 +94,6 @@ func TestUpdateProject(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodPatch, "/", strings.NewReader(projectJSON))
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("UpdateProject", mock.Anything, testProjectZero).Return(nil)
 		handler := &Handler{&mockApp}
@@ -113,7 +109,6 @@ func TestDeleteProject(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodDelete, "/", nil)
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("DeleteProject", mock.Anything).Return(nil)
 		handler := &Handler{&mockApp}
@@ -131,7 +126,6 @@ func TestGetAllColumns(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("ReadColumns").Return(testColumns, nil)
 		handler := &Handler{&mockApp}
@@ -147,7 +141,6 @@ func TestCreateColumn(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(columnJSON))
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("CreateColumn", testColumnOne, mock.Anything).Return(1, nil)
 		handler := &Handler{&mockApp}
@@ -163,7 +156,6 @@ func TestReadColumn(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("ReadColumn", mock.Anything).Return(testColumnOne, nil)
 		handler := &Handler{&mockApp}
@@ -179,7 +171,6 @@ func TestUpdateColumn(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodPatch, "/", strings.NewReader(columnJSON))
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("UpdateColumn", mock.Anything, testColumnOne).Return(nil)
 		handler := &Handler{&mockApp}
@@ -195,7 +186,6 @@ func TestDeleteColumn(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodDelete, "/", nil)
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("MoveTasksToColumn", mock.Anything, mock.Anything).Return(nil)
 		mockApp.On("DeleteColumn", mock.Anything).Return(nil)
@@ -212,7 +202,6 @@ func TestMoveColumn(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodPatch, "/", nil)
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("MoveColumn", mock.Anything, mock.Anything).Return(nil)
 		handler := &Handler{&mockApp}
@@ -230,7 +219,6 @@ func TestGetAllTasks(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("ReadTasks").Return(testTasks, nil)
 		handler := &Handler{&mockApp}
@@ -246,7 +234,6 @@ func TestCreateTask(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(taskJSON))
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("CreateTask", testTaskOne, mock.Anything).Return(1, nil)
 		handler := &Handler{&mockApp}
@@ -262,7 +249,6 @@ func TestReadTask(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("ReadTask", mock.Anything).Return(testTaskOne, nil)
 		handler := &Handler{&mockApp}
@@ -278,7 +264,6 @@ func TestUpdateTask(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodPatch, "/", strings.NewReader(taskJSON))
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("UpdateTask", mock.Anything, testTaskOne).Return(nil)
 		handler := &Handler{&mockApp}
@@ -294,7 +279,6 @@ func TestDeleteTask(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodDelete, "/", nil)
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("DeleteTask", mock.Anything).Return(nil)
 		handler := &Handler{&mockApp}
@@ -310,7 +294,6 @@ func TestMoveTaskToColumn(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodPatch, "/", nil)
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("MoveTaskToColumn", mock.Anything, mock.Anything).Return(nil)
 		handler := &Handler{&mockApp}
@@ -325,7 +308,6 @@ func TestMoveTask(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodPatch, "/", nil)
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("MoveTaskUpDown", mock.Anything, mock.Anything).Return(nil)
 		handler := &Handler{&mockApp}
@@ -343,7 +325,6 @@ func TestGetAllComments(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("ReadComments").Return(testComments, nil)
 		handler := &Handler{&mockApp}
@@ -359,7 +340,6 @@ func TestCreateComment(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(commentJSON))
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("CreateComment", testCommentOne, mock.Anything).Return(1, nil)
 		handler := &Handler{&mockApp}
@@ -375,7 +355,6 @@ func TestReadComment(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("ReadComment", mock.Anything).Return(testCommentOne, nil)
 		handler := &Handler{&mockApp}
@@ -391,7 +370,6 @@ func TestUpdateComment(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodPatch, "/", strings.NewReader(commentJSON))
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("UpdateComment", mock.Anything, testCommentOne).Return(nil)
 		handler := &Handler{&mockApp}
@@ -407,7 +385,6 @@ func TestDeleteComment(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodDelete, "/", nil)
 		rec := httptest.NewRecorder()
-
 		mockApp := mocks.AppController{}
 		mockApp.On("DeleteComment", mock.Anything).Return(nil)
 		handler := &Handler{&mockApp}
