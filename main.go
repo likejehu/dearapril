@@ -29,7 +29,7 @@ func main() {
 	r.Post("/{projectid}/{columnid}", handler.CreateColumn)
 	r.Get("/{projectid}/{columnid}", handler.ReadColumn)
 	r.Patch("/{projectid}/{columnid}", handler.UpdateColumn)
-	r.Delete("/{projectid}/{columnid}", handler.DeleteColumn)
+	r.Delete("/{projectid}/{columnid}/{leftid}", handler.DeleteColumn)
 	r.Patch("/{projectid}/{columnid}/move/{nextid}", handler.MoveColumn)
 
 	r.Get("/{projectid}/{columnid}/tasks", handler.GetAllTasks)

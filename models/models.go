@@ -13,7 +13,7 @@ type Project struct {
 type Column struct {
 	ID       int
 	Name     string `json:"name"  validate:"required,min=1,max=255"`
-	Position int
+	Position int    `json:"position"`
 }
 
 // Task can be created only within a Column
@@ -21,12 +21,12 @@ type Task struct {
 	ID          int
 	Name        string `json:"name"  validate:"required,min=1,max=500"`
 	Description string `json:"description"  validate:"required,min=0,max=5000"`
-	Position    int
+	Position    int    `json:"position"`
 }
 
 // Comment can be created only within a Task
 type Comment struct {
 	ID   int
-	Text string `json:"text"  validate:"required,min=1,max=5000"`
-	Date time.Time
+	Text string    `json:"text"  validate:"required,min=1,max=5000"`
+	Date time.Time `json:"date"`
 }
