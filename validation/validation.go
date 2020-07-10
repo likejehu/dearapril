@@ -38,9 +38,6 @@ func ValidateStruct(s interface{}) {
 			fmt.Println(err.Param())
 			fmt.Println()
 		}
-
-		// from here you can create your own error messages in whatever language you wish
 		return
 	}
-
 }
