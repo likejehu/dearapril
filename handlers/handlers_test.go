@@ -39,6 +39,8 @@ var (
 	testCommentOne = &models.Comment{1, "this is text1", "Dec 1 13:05:05 CET 2020"}
 	testCommentTwo = &models.Comment{2, "this is text2", "Dec 2 15:07:08 CET 2020"}
 	testComments   = []*models.Comment{testCommentOne, testCommentTwo}
+	commentJSON    = `{"id":1, "text":"this is text1","date":"Dec 1 13:05:05 CET 2020"}
+	`
 )
 
 //Projects
@@ -352,68 +354,66 @@ func TestGetAllComments(t *testing.T) {
 	})
 }
 
-/*
-func TestCreateProject(t *testing.T) {
+func TestCreateComment(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		//setup
-		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(projectJSON))
+		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(commentJSON))
 		rec := httptest.NewRecorder()
 
 		mockApp := mocks.AppController{}
-		mockApp.On("CreateProject", testProjectZero).Return(1, nil)
+		mockApp.On("CreateComment", testCommentOne, mock.Anything).Return(1, nil)
 		handler := &Handler{&mockApp}
-		handler.CreateProject(rec, req)
+		handler.CreateComment(rec, req)
 		mockApp.AssertExpectations(t)
 		//assertions
 		assert.Equal(t, http.StatusOK, rec.Code)
 	})
 }
 
-func TestReadProject(t *testing.T) {
+func TestReadComment(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
 
 		mockApp := mocks.AppController{}
-		mockApp.On("ReadProject", mock.Anything).Return(testProjectOne, nil)
+		mockApp.On("ReadComment", mock.Anything).Return(testCommentOne, nil)
 		handler := &Handler{&mockApp}
-		handler.ReadProject(rec, req)
+		handler.ReadComment(rec, req)
 		mockApp.AssertExpectations(t)
 		//assertions
 		assert.Equal(t, http.StatusOK, rec.Code)
 	})
 }
 
-func TestUpdateProject(t *testing.T) {
+func TestUpdateComment(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		//setup
-		req := httptest.NewRequest(http.MethodPatch, "/", strings.NewReader(projectJSON))
+		req := httptest.NewRequest(http.MethodPatch, "/", strings.NewReader(commentJSON))
 		rec := httptest.NewRecorder()
 
 		mockApp := mocks.AppController{}
-		mockApp.On("UpdateProject", mock.Anything, testProjectZero).Return(nil)
+		mockApp.On("UpdateComment", mock.Anything, testCommentOne).Return(nil)
 		handler := &Handler{&mockApp}
-		handler.UpdateProject(rec, req)
+		handler.UpdateComment(rec, req)
 		mockApp.AssertExpectations(t)
 		//assertions
 		assert.Equal(t, http.StatusOK, rec.Code)
 	})
 }
 
-func TestDeleteProject(t *testing.T) {
+func TestDeleteComment(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		//setup
 		req := httptest.NewRequest(http.MethodDelete, "/", nil)
 		rec := httptest.NewRecorder()
 
 		mockApp := mocks.AppController{}
-		mockApp.On("DeleteProject", mock.Anything).Return(nil)
+		mockApp.On("DeleteComment", mock.Anything).Return(nil)
 		handler := &Handler{&mockApp}
-		handler.DeleteProject(rec, req)
+		handler.DeleteComment(rec, req)
 		mockApp.AssertExpectations(t)
 		//assertions
 		assert.Equal(t, http.StatusNoContent, rec.Code)
 	})
 }
-*/
