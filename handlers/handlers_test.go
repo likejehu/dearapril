@@ -298,3 +298,34 @@ func TestDeleteTask(t *testing.T) {
 		assert.Equal(t, http.StatusNoContent, rec.Code)
 	})
 }
+
+func TestMoveTaskToColumn(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		req := httptest.NewRequest(http.MethodPatch, "/", nil)
+		rec := httptest.NewRecorder()
+
+		mockApp := mocks.AppController{}
+		mockApp.On("MoveTaskToColumn", mock.Anything, mock.Anything).Return(nil)
+		handler := &Handler{&mockApp}
+		handler.MoveTaskToColumn(rec, req)
+		mockApp.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, http.StatusOK, rec.Code)
+	})
+}
+func TestMoveTask(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		req := httptest.NewRequest(http.MethodPatch, "/", nil)
+		rec := httptest.NewRecorder()
+
+		mockApp := mocks.AppController{}
+		mockApp.On("MoveTaskUpDown", mock.Anything, mock.Anything).Return(nil)
+		handler := &Handler{&mockApp}
+		handler.MoveTask(rec, req)
+		mockApp.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, http.StatusOK, rec.Code)
+	})
+}
