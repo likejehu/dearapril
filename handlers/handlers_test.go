@@ -33,7 +33,7 @@ var (
 	testTaskOne = &models.Task{1, "taskOne", "desc1", 1}
 	testTaskTwo = &models.Task{1, "taskTwo", "desc2", 2}
 	testTasks   = []*models.Task{testTaskOne, testTaskTwo}
-	taskJSON    = `{"id":1, "name":"columnOne","description":"desc1","position":1}
+	taskJSON    = `{"id":1, "name":"taskOne","description":"desc1","position":1}
 	`
 )
 
@@ -219,23 +219,23 @@ func TestGetAllTasks(t *testing.T) {
 	})
 }
 
-/*
-func TestCreateProject(t *testing.T) {
+func TestCreateTask(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		//setup
-		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(projectJSON))
+		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(taskJSON))
 		rec := httptest.NewRecorder()
 
 		mockApp := mocks.AppController{}
-		mockApp.On("CreateProject", testProjectZero).Return(1, nil)
+		mockApp.On("CreateTask", testTaskOne, mock.Anything).Return(1, nil)
 		handler := &Handler{&mockApp}
-		handler.CreateProject(rec, req)
+		handler.CreateTask(rec, req)
 		mockApp.AssertExpectations(t)
 		//assertions
 		assert.Equal(t, http.StatusOK, rec.Code)
 	})
 }
 
+/*
 func TestReadProject(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		//setup
