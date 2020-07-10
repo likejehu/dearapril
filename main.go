@@ -30,7 +30,7 @@ func main() {
 	r.Get("/{projectid}/{columnid}", handler.ReadColumn)
 	r.Patch("/{projectid}/{columnid}", handler.UpdateColumn)
 	r.Delete("/{projectid}/{columnid}", handler.DeleteColumn)
-	r.Patch("/{projectid}/{columnid}/move/{direction}", handler.MoveColumn)
+	r.Patch("/{projectid}/{columnid}/move/{nextid}", handler.MoveColumn)
 
 	r.Get("/{projectid}/{columnid}/tasks", handler.GetAllTasks)
 	r.Post("/{projectid}/{columnid}/{taskid}", handler.CreateTask)
@@ -38,7 +38,7 @@ func main() {
 	r.Patch("/{projectid}/{columnid}/{taskid}", handler.UpdateTask)
 	r.Delete("/{projectid}/{columnid}/{taskid}", handler.DeleteTask)
 	r.Patch("/{projectid}/{columnid}/{taskid}/movetocolumn/{newcolumnid}", handler.MoveTaskToColumn)
-	r.Patch("/{projectid}/{columnid}/{taskid}/move/{direction}", handler.MoveTask)
+	r.Patch("/{projectid}/{columnid}/{taskid}/move/{nextid}", handler.MoveTask)
 
 	r.Get("//{projectid}/{columnid}/{taskid}/comments", handler.GetAllComments)
 	r.Post("/{projectid}/{columnid}/{taskid}/{commentid}", handler.CreateComment)

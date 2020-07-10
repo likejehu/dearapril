@@ -17,14 +17,14 @@ type Storer interface {
 	GetAllColumns() (columns []*models.Column, err error)
 	UpdateColumn(id int, column *models.Column) (err error)
 	DeleteColumn(id int) (err error)
-	UpdateColumnPosition(id int, position string) (err error)
+	UpdateColumnPosition(id int, position int) (err error)
 
 	CreateTask(task *models.Task) (id int, err error)
 	GetTask(id int) (task *models.Task, err error)
 	GetAllTasks() (tasks []*models.Task, err error)
 	UpdateTask(id int, task *models.Task) (err error)
 	DeleteTask(id int) (err error)
-	UpdateTaskPosition(id int, position string) (err error)
+	UpdateTaskPosition(id int, position int) (err error)
 
 	CreateComment(comment *models.Comment) (id int, err error)
 	GetComment(id int) (comment *models.Comment, err error)
@@ -125,9 +125,17 @@ func (c *Controller) DeleteColumn(id int) (err error) {
 
 // MoveColumn  moves given Column to left or right
 func (c *Controller) MoveColumn(id int, next int) (err error) {
-
-	c.Store.UpdateColumnPosition(id, "direction")
-
+	col, err := c.Store.GetColumn(id)
+	oldPosition := col.Position
+	nextCol, err := c.Store.GetColumn(next)
+	nextPosition := nextCol.Position
+	c.Store.UpdateColumnPosition(next, oldPosition)
+	if nextPosition > oldPosition {
+		c.Store.UpdateColumnPosition(id, oldPosition+1)
+	}
+	if nextPosition > oldPosition {
+		c.Store.UpdateColumnPosition(id, oldPosition-1)
+	}
 	return nil
 }
 
@@ -178,9 +186,19 @@ func (c *Controller) MoveTaskToColumn(colid, taskid int) (err error) {
 }
 
 // MoveTaskUpDown  moves given Task  up/down (to prioritize it)
-func (c *Controller) MoveTaskUpDown(taskid int, direction string) (err error) {
+func (c *Controller) MoveTaskUpDown(taskid int, next int) (err error) {
 
-	c.Store.UpdateTaskPosition(taskid, direction)
+	task, err := c.Store.GetTask(taskid)
+	oldPosition := task.Position
+	nextTask, err := c.Store.GetTask(next)
+	nextPosition := nextTask.Position
+	c.Store.UpdateTaskPosition(next, oldPosition)
+	if nextPosition > oldPosition {
+		c.Store.UpdateTaskPosition(taskid, oldPosition+1)
+	}
+	if nextPosition > oldPosition {
+		c.Store.UpdateTaskPosition(taskid, oldPosition-1)
+	}
 	return nil
 }
 

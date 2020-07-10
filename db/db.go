@@ -175,7 +175,7 @@ func (store *dbStore) DeleteColumn(id int) (err error) {
 	return err
 }
 
-func (store *dbStore) UpdateColumnPosition(id int, position string) (err error) {
+func (store *dbStore) UpdateColumnPosition(id int, position int) (err error) {
 
 	_, err = store.db.Exec(`UPDATE columns SET position =$2 WHERE id = $1;`, id, position)
 
@@ -260,7 +260,7 @@ func (store *dbStore) DeleteTask(id int) (err error) {
 	return err
 }
 
-func (store *dbStore) UpdateTaskPosition(id int, position string) (err error) {
+func (store *dbStore) UpdateTaskPosition(id int, position int) (err error) {
 
 	_, err = store.db.Exec(`UPDATE tasks SET position = $2 WHERE id = $1;`, id, position)
 

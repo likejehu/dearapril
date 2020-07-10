@@ -180,13 +180,13 @@ func (_m *AppController) MoveTaskToColumn(colid int, taskid int) error {
 	return r0
 }
 
-// MoveTaskUpDown provides a mock function with given fields: taskid, direction
-func (_m *AppController) MoveTaskUpDown(taskid int, direction string) error {
-	ret := _m.Called(taskid, direction)
+// MoveTaskUpDown provides a mock function with given fields: taskid, next
+func (_m *AppController) MoveTaskUpDown(taskid int, next int) error {
+	ret := _m.Called(taskid, next)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(int, string) error); ok {
-		r0 = rf(taskid, direction)
+	if rf, ok := ret.Get(0).(func(int, int) error); ok {
+		r0 = rf(taskid, next)
 	} else {
 		r0 = ret.Error(0)
 	}

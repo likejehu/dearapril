@@ -33,7 +33,7 @@ type AppController interface {
 	DeleteTask(id int) (err error)
 	ReadTasks() (tasks []*models.Task, err error)
 	MoveTaskToColumn(colid, taskid int) (err error)
-	MoveTaskUpDown(taskid int, direction string) (err error)
+	MoveTaskUpDown(taskid int, next int) (err error)
 
 	CreateComment(com *models.Comment, taskid int) (comid int, err error)
 	ReadComment(id int) (com *models.Comment, err error)
@@ -294,8 +294,9 @@ func (h *Handler) MoveTaskToColumn(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) MoveTask(w http.ResponseWriter, r *http.Request) {
 	tID := chi.URLParam(r, "taskid") // getting id of Task from the route
 	taskID, _ := strconv.Atoi(tID)
-	direction := chi.URLParam(r, "direction") // getting direction  from the route
-	h.App.MoveTaskUpDown(taskID, direction)
+	direction := chi.URLParam(r, "nextid") // getting id of next position  from the route
+	next, _ := strconv.Atoi(direction)
+	h.App.MoveTaskUpDown(taskID, next)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	return
