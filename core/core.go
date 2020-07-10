@@ -124,9 +124,9 @@ func (c *Controller) DeleteColumn(id int) (err error) {
 }
 
 // MoveColumn  moves given Column to left or right
-func (c *Controller) MoveColumn(id int, direction string) (err error) {
+func (c *Controller) MoveColumn(id int, next int) (err error) {
 
-	c.Store.UpdateColumnPosition(id, direction)
+	c.Store.UpdateColumnPosition(id, "direction")
 
 	return nil
 }

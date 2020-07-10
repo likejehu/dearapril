@@ -152,9 +152,18 @@ func (_m *AppController) DeleteTask(id int) error {
 	return r0
 }
 
-// MoveColumn provides a mock function with given fields: id, direction
-func (_m *AppController) MoveColumn(id int, direction string) {
-	_m.Called(id, direction)
+// MoveColumn provides a mock function with given fields: id, next
+func (_m *AppController) MoveColumn(id int, next int) error {
+	ret := _m.Called(id, next)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(int, int) error); ok {
+		r0 = rf(id, next)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
 }
 
 // MoveTaskToColumn provides a mock function with given fields: colid, taskid

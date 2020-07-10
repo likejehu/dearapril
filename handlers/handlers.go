@@ -25,7 +25,7 @@ type AppController interface {
 	UpdateColumn(id int, col *models.Column) (colid int, err error)
 	DeleteColumn(id int) (err error)
 	ReadColumns() (col []*models.Column, err error)
-	MoveColumn(id int, direction string)
+	MoveColumn(id int, next int) (err error)
 
 	CreateTask(t *models.Task, colid int) (taskid int, err error)
 	ReadTask(id int) (t *models.Task, err error)
@@ -197,10 +197,11 @@ func (h *Handler) DeleteColumn(w http.ResponseWriter, r *http.Request) {
 
 //MoveColumn is for moving given column across project
 func (h *Handler) MoveColumn(w http.ResponseWriter, r *http.Request) {
-	cID := chi.URLParam(r, "columnid")        // getting id of column from the route
-	direction := chi.URLParam(r, "direction") // getting direction  from the route
+	cID := chi.URLParam(r, "columnid")     // getting id of column from the route
+	direction := chi.URLParam(r, "nextid") // getting id of next position  from the route
+	next, _ := strconv.Atoi(direction)
 	columnID, _ := strconv.Atoi(cID)
-	h.App.MoveColumn(columnID, direction)
+	h.App.MoveColumn(columnID, next)
 	w.WriteHeader(http.StatusOK)
 	return
 }
