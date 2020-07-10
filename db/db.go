@@ -58,7 +58,7 @@ func (store *dbStore) GetProject(id int) (project *models.Project, err error) {
 func (store *dbStore) GetAllProjects() (projects []*models.Project, err error) {
 
 	projects = []*models.Project{}
-	rows, err := store.db.Query(`SELECT id, name, description  FROM projects;`)
+	rows, err := store.db.Query(`SELECT id, name, description  FROM projects ORDER BY name;`)
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
 	}
@@ -129,7 +129,7 @@ func (store *dbStore) GetColumn(id int) (column *models.Column, err error) {
 func (store *dbStore) GetAllColumns() (columns []*models.Column, err error) {
 
 	columns = []*models.Column{}
-	rows, err := store.db.Query(`SELECT id, name, position  FROM columns;`)
+	rows, err := store.db.Query(`SELECT id, name, position  FROM columns ORDER BY position;`)
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
 	}
@@ -214,7 +214,7 @@ func (store *dbStore) GetTask(id int) (task *models.Task, err error) {
 func (store *dbStore) GetAllTasks() (tasks []*models.Task, err error) {
 
 	tasks = []*models.Task{}
-	rows, err := store.db.Query(`SELECT id,  name, description, position  FROM tasks;`)
+	rows, err := store.db.Query(`SELECT id,  name, description, position  FROM tasks ORDER BY position;`)
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
 	}
@@ -299,7 +299,7 @@ func (store *dbStore) GetComment(id int) (comment *models.Comment, err error) {
 func (store *dbStore) GetAllComments() (comments []*models.Comment, err error) {
 
 	comments = []*models.Comment{}
-	rows, err := store.db.Query(`SELECT id,  text, date  FROM comments;`)
+	rows, err := store.db.Query(`SELECT id,  text, date  FROM comments ORDER BY date DESC;`)
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
 	}
