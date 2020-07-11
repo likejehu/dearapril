@@ -59,3 +59,41 @@ func TestCreateProject(t *testing.T) {
 		assert.Equal(t, projectid, 1)
 	})
 }
+
+func TestUpdateProject(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("UpdateProject", 1, testProjectOne).Return(nil)
+		testController.UpdateProject(1, testProjectOne)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, nil, nil)
+	})
+}
+
+func TestReadProject(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("GetProject", 1).Return(testProjectOne, nil)
+		project, _ := testController.ReadProject(1)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, testProjectOne, project)
+	})
+}
+func TestDeleteProject(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("DeleteProject", 1).Return(nil)
+		testController.DeleteProject(1)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, nil, nil)
+	})
+}
