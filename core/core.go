@@ -37,6 +37,7 @@ type Storer interface {
 	CreateTaskComments(taskid int, comid int) (err error)
 
 	UpdateColumnTasks(colid int, taskid int) (err error)
+	MoveTasks(colid int, nextid int) (err error)
 }
 
 //Controller is struct that has core functionality of the app
@@ -118,8 +119,6 @@ func (c *Controller) ReadColumn(id int) (col *models.Column, err error) {
 // DeleteColumn  deletes given Column
 func (c *Controller) DeleteColumn(id int) (err error) {
 	c.Store.DeleteColumn(id)
-	newid := id - 1
-	c.Store.UpdateColumnTasks(id, newid)
 	return nil
 }
 
@@ -182,6 +181,13 @@ func (c *Controller) DeleteTask(id int) (err error) {
 func (c *Controller) MoveTaskToColumn(colid, taskid int) (err error) {
 
 	c.Store.UpdateColumnTasks(colid, taskid)
+	return nil
+}
+
+// MoveTasksToColumn  moves all the task of given column to another column
+func (c *Controller) MoveTasksToColumn(colid, nextid int) (err error) {
+
+	c.Store.MoveTasks(colid, nextid)
 	return nil
 }
 

@@ -393,3 +393,15 @@ func (store *dbStore) UpdateColumnTasks(colid int, taskid int) (err error) {
 	}
 	return err
 }
+
+func (store *dbStore) MoveTasks(colid int, nextid int) (err error) {
+	_, err = store.db.Exec(`UPDATE columns_tasks SET column_id = $2 WHERE column_id = $1;`, colid, nextid)
+
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return err
+}
