@@ -30,6 +30,8 @@ github.com/labstack/echo v3.3.10+incompatible/go.mod h1:0INS7j/VjnFxD4E2wkz67b8c
 github.com/labstack/gommon v0.3.0/go.mod h1:MULnywXg0yavhxWKc+lOruYdAhDwPK9wf0OL7NoOu+k=
 github.com/leodido/go-urn v1.2.0 h1:hpXL4XnriNwQ/ABnpepYM/1vCLWNDfUNts8dX3xTG6Y=
 github.com/leodido/go-urn v1.2.0/go.mod h1:+8+nEpDfqqsY+g338gtMEUOtuK+4dEMhiQEgxpxOKII=
+github.com/lib/pq v1.7.0 h1:h93mCPfUSkaul3Ka/VG8uZdmW1uMHDGxzu0NWHuJmHY=
+github.com/lib/pq v1.7.0/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
 github.com/likejehu/gop2 v0.0.0-20200403173746-f33ef0302b3b/go.mod h1:3P5PcHfFyndDf50pqlo5CS8r26M6SsZ5uRJhwzvjca8=
 github.com/likejehu/usrcnt v0.0.0-20200423160426-f97d47c098ab h1:bGJylH51rdumg/dlSJd42/vR5CEm0fpmv+EXjG9oIFU=
 github.com/likejehu/usrcnt v0.0.0-20200423160426-f97d47c098ab/go.mod h1:4xtdNafUpxZ7A3+dvVrZC44r2ZBINAcqojknoevFV3c=

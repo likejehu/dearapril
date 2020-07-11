@@ -1,6 +1,7 @@
 package core
 
 import (
+	"github.com/likejehu/dearapril/db"
 	"github.com/likejehu/dearapril/models"
 )
 
@@ -43,6 +44,11 @@ type Storer interface {
 //Controller is struct that has core functionality of the app
 type Controller struct {
 	Store Storer
+}
+
+// AppController is instance of core logic struct
+var AppController = &Controller{
+	Store: db.Store,
 }
 
 //PROJECTS

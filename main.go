@@ -12,8 +12,17 @@ import (
 )
 
 func main() {
-	appController := core.Controller{&db.Store}
-	handler := handlers.Handler{&appController}
+
+	db, err := db.ConnectDB()
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	handler := handlers.Handler{
+		App: core.AppController,
+	}
+
 	r := chi.NewRouter()
 	//middleware
 	r.Use(middleware.Logger)

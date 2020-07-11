@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 
+	_ "github.com/lib/pq"
 	"github.com/likejehu/dearapril/models"
 
 	"github.com/pkg/errors"
@@ -24,13 +25,17 @@ var pgURL = "postgres://minzlhay:xnHd-hp3uJljOBWnLDwQkb3zt53phs55@balarama.db.el
 var psqlDB *sql.DB
 
 //Store is for storing
-var Store = dbStore{
+var Store = &dbStore{
 	db: psqlDB,
 }
 
-func connectDB() (err error) {
+// ConnectDB is for conneting to elephantsql
+func ConnectDB() (psqlDB *sql.DB, err error) {
 	psqlDB, err = sql.Open("postgres", pgURL)
-	return err
+	if err != nil {
+		log.Fatal(err)
+	}
+	return psqlDB, err
 }
 
 //Projects
