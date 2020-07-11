@@ -13,11 +13,8 @@ import (
 
 func main() {
 
-	db, err := db.ConnectDB()
-	if err != nil {
-		panic(err)
-	}
-	defer db.Close()
+	conn := db.PostgreStore.DB
+	defer conn.Close()
 
 	handler := handlers.Handler{
 		App: core.AppController,

@@ -15,23 +15,21 @@ type DBStore struct {
 
 var pgURL = "postgres://minzlhay:xnHd-hp3uJljOBWnLDwQkb3zt53phs55@balarama.db.elephantsql.com:5432/minzlhay"
 
-// PsqlDB is instanse of sql.DB
-var PsqlDB *sql.DB
+// PostgreStore is instance of redis storage
+var PostgreStore = NewPostgreConn(pgURL)
 
-//PostgreStore is for storing
-var PostgreStore = &DBStore{
-	DB: PsqlDB,
-}
-
-// ConnectDB is for conneting to elephantsql
-func ConnectDB() (PsqlDB *sql.DB, err error) {
-	PsqlDB, err = sql.Open("postgres", pgURL)
+// NewPostgreConn returns a new DBStore Instance
+func NewPostgreConn(address string) *DBStore {
+	var postgreDB = &DBStore{}
+	// Initialize the postgre connection to a redis instance running on your local machine
+	conn, err := sql.Open("postgres", address)
 	if err != nil {
+		log.Println(err)
 		log.Fatal(err)
 	}
-	log.Println("connection +")
-
-	return PsqlDB, err
+	postgreDB.DB = conn
+	log.Println("connetion established")
+	return postgreDB
 }
 
 //Projects
