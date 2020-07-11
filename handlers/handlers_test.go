@@ -14,10 +14,9 @@ import (
 )
 
 var (
-	error500 = errors.New("shit happens")
-
-	testProjectOne  = &models.Project{1, "this is the one", "hey you!"}
+	error500        = errors.New("shit happens")
 	testProjectZero = &models.Project{0, "this is the zEro", "zero!"}
+	testProjectOne  = &models.Project{1, "this is the one", "hey you!"}
 	testProjectTwo  = &models.Project{2, "this is the two", "how are you doin?"}
 	testProjects    = []*models.Project{testProjectOne, testProjectTwo}
 
