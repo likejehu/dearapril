@@ -6,12 +6,7 @@ import (
 
 	_ "github.com/lib/pq"
 	"github.com/likejehu/dearapril/models"
-
-	"github.com/pkg/errors"
 )
-
-// Error404 is 404 err for store, when key is not found
-var Error404 = errors.New("key not found")
 
 // The `dbStore` struct will implement the `Store` interface
 // It also takes the sql DB connection object, which represents
