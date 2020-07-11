@@ -181,3 +181,179 @@ func TestMoveColumn(t *testing.T) {
 		assert.Equal(t, nil, nil)
 	})
 }
+
+//TASKS
+
+func TestReadTasks(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("GetAllTasks").Return(testTasks, nil)
+		tasks, _ := testController.ReadTasks()
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, testTasks, tasks)
+	})
+}
+func TestCreateTask(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("CreateTask", testTaskOne).Return(1, nil)
+		mockStore.On("CreateColumnTasks", 1, 1).Return(nil)
+		taskid, _ := testController.CreateTask(testTaskOne, 1)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, taskid, 1)
+	})
+}
+func TestUpdateTask(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("UpdateTask", 1, testTaskOne).Return(nil)
+		testController.UpdateTask(1, testTaskOne)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, nil, nil)
+	})
+}
+
+func TestReadTask(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("GetTask", 1).Return(testTaskOne, nil)
+		task, _ := testController.ReadTask(1)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, testTaskOne, task)
+	})
+}
+
+func TestDeleteTask(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("DeleteTask", 1).Return(nil)
+		testController.DeleteTask(1)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, nil, nil)
+	})
+}
+
+func TestMoveTaskToColumn(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("UpdateColumnTasks", 1, 1).Return(nil)
+		testController.MoveTaskToColumn(1, 1)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, nil, nil)
+	})
+}
+
+func TestMoveTasksToColumn(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("MoveTasks", 1, 1).Return(nil)
+		testController.MoveTasksToColumn(1, 1)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, nil, nil)
+	})
+}
+
+func TestMoveTaskUpDown(t *testing.T) {
+	t.Run("success with next bigger than current", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("GetTask", 1).Return(testTaskOne, nil)
+		mockStore.On("GetTask", 2).Return(testTaskTwo, nil)
+		mockStore.On("UpdateTaskPosition", 2, 1).Return(nil)
+		mockStore.On("UpdateTaskPosition", 1, 2).Return(nil)
+		testController.MoveTaskUpDown(1, 2)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, nil, nil)
+	})
+}
+
+//COMMENTS
+
+func TestReadComments(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("GetAllComments").Return(testComments, nil)
+		comments, _ := testController.ReadComments()
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, testComments, comments)
+	})
+}
+
+func TestCreateComment(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("CreateComment", testCommentOne).Return(1, nil)
+		mockStore.On("CreateTaskComments", 1, 1).Return(nil)
+		commentid, _ := testController.CreateComment(testCommentOne, 1)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, commentid, 1)
+	})
+}
+
+func TestUpdateComment(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("UpdateComment", 1, testCommentOne).Return(nil)
+		testController.UpdateComment(1, testCommentOne)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, nil, nil)
+	})
+}
+
+func TestReadComment(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("GetComment", 1).Return(testCommentOne, nil)
+		comment, _ := testController.ReadComment(1)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, testCommentOne, comment)
+	})
+}
+
+func TestDeleteComment(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("DeleteComment", 1).Return(nil)
+		testController.DeleteComment(1)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, nil, nil)
+	})
+}

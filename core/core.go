@@ -239,7 +239,7 @@ func (c *Controller) ReadComment(id int) (com *models.Comment, err error) {
 
 // DeleteComment   deletes given Comment
 func (c *Controller) DeleteComment(id int) (err error) {
-	err = c.Store.DeleteColumn(id)
+	err = c.Store.DeleteComment(id)
 
 	return err
 }
