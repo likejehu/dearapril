@@ -38,6 +38,9 @@ func connectDB() (err error) {
 func (store *dbStore) CreateProject(project *models.Project) (id int, err error) {
 
 	res, err := store.db.Exec(`INSERT INTO projects (name, description) VALUES ($1, $2 );`, project.Name, project.Description)
+	if err != nil {
+		log.Fatal(err)
+	}
 	lastid, err := res.LastInsertId()
 	id = int(lastid)
 	return id, err
@@ -108,6 +111,9 @@ func (store *dbStore) DeleteProject(id int) (err error) {
 
 func (store *dbStore) CreateColumn(column *models.Column) (id int, err error) {
 	res, err := store.db.Exec(`INSERT INTO columns (name, position) VALUES ($1, $2);`, column.Name, column.Position)
+	if err != nil {
+		log.Fatal(err)
+	}
 	lastid, err := res.LastInsertId()
 	id = int(lastid)
 	return id, err
@@ -206,6 +212,9 @@ func (store *dbStore) CountColumns(id int, position int) (err error) {
 
 func (store *dbStore) CreateTask(task *models.Task) (id int, err error) {
 	res, err := store.db.Exec(`INSERT INTO tasks (name, description, position) VALUES ($1, $2, $3);`, task.Name, task.Description, task.Position)
+	if err != nil {
+		log.Fatal(err)
+	}
 	lastid, err := res.LastInsertId()
 	id = int(lastid)
 	return id, err
@@ -291,6 +300,9 @@ func (store *dbStore) UpdateTaskPosition(id int, position int) (err error) {
 
 func (store *dbStore) CreateComment(comment *models.Comment) (id int, err error) {
 	res, err := store.db.Exec(`INSERT INTO comments (text, date) VALUES ($1, $2);`, comment.Text, comment.Date)
+	if err != nil {
+		log.Fatal(err)
+	}
 	lastid, err := res.LastInsertId()
 	id = int(lastid)
 	return id, err
