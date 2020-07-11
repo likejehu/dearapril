@@ -78,7 +78,7 @@ func (store *DBStore) GetAllProjects() (projects []*models.Project, err error) {
 	defer rows.Close()
 	for rows.Next() {
 		project := new(models.Project)
-		err = rows.Scan(&project.ID, &project.Name, project.Description)
+		err = rows.Scan(&project.ID, &project.Name, &project.Description)
 		if err != nil {
 			log.Println(err)
 			log.Fatal(err)
