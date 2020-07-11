@@ -48,7 +48,7 @@ type Controller struct {
 
 // AppController is instance of core logic struct
 var AppController = &Controller{
-	Store: db.Store,
+	Store: db.PostgreStore,
 }
 
 //PROJECTS

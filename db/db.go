@@ -8,36 +8,38 @@ import (
 	"github.com/likejehu/dearapril/models"
 )
 
-// The `dbStore` struct will implement the `Store` interface
-// It also takes the sql DB connection object, which represents
-// the database connection and postgre cloud
-type dbStore struct {
-	db *sql.DB
+//DBStore is the stuct for database operations
+type DBStore struct {
+	DB *sql.DB
 }
 
 var pgURL = "postgres://minzlhay:xnHd-hp3uJljOBWnLDwQkb3zt53phs55@balarama.db.elephantsql.com:5432/minzlhay"
 
-var psqlDB *sql.DB
+// PsqlDB is instanse of sql.DB
+var PsqlDB *sql.DB
 
-//Store is for storing
-var Store = &dbStore{
-	db: psqlDB,
+//PostgreStore is for storing
+var PostgreStore = &DBStore{
+	DB: PsqlDB,
 }
 
 // ConnectDB is for conneting to elephantsql
-func ConnectDB() (psqlDB *sql.DB, err error) {
-	psqlDB, err = sql.Open("postgres", pgURL)
+func ConnectDB() (PsqlDB *sql.DB, err error) {
+	PsqlDB, err = sql.Open("postgres", pgURL)
 	if err != nil {
 		log.Fatal(err)
 	}
-	return psqlDB, err
+	log.Println("connection +")
+
+	return PsqlDB, err
 }
 
 //Projects
 
-func (store *dbStore) CreateProject(project *models.Project) (id int, err error) {
+//CreateProject is for inserting project to database
+func (store *DBStore) CreateProject(project *models.Project) (id int, err error) {
 
-	res, err := store.db.Exec(`INSERT INTO projects (name, description) VALUES ($1, $2 );`, project.Name, project.Description)
+	res, err := store.DB.Exec(`INSERT INTO projects (name, description) VALUES ($1, $2 );`, project.Name, project.Description)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,10 +47,12 @@ func (store *dbStore) CreateProject(project *models.Project) (id int, err error)
 	id = int(lastid)
 	return id, err
 }
-func (store *dbStore) GetProject(id int) (project *models.Project, err error) {
+
+//GetProject is for getting project from database
+func (store *DBStore) GetProject(id int) (project *models.Project, err error) {
 	project = new(models.Project)
 
-	err = store.db.QueryRow(`SELECT id, name, description FROM projects WHERE id=$1;`, id).Scan(&project.ID, &project.Name, &project.Description)
+	err = store.DB.QueryRow(`SELECT id, name, description FROM projects WHERE id=$1;`, id).Scan(&project.ID, &project.Name, &project.Description)
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
 	}
@@ -58,21 +62,27 @@ func (store *dbStore) GetProject(id int) (project *models.Project, err error) {
 	return project, err
 
 }
-func (store *dbStore) GetAllProjects() (projects []*models.Project, err error) {
+
+//GetAllProjects is for getting projects from database
+func (store *DBStore) GetAllProjects() (projects []*models.Project, err error) {
 
 	projects = []*models.Project{}
-	rows, err := store.db.Query(`SELECT id, name, description  FROM projects ORDER BY name;`)
+	rows, err := store.DB.Query(`SELECT id, name, description  FROM projects ORDER BY name;`)
+	log.Println(rows)
 	if err == sql.ErrNoRows {
+		log.Println(err)
 		log.Fatal("No Results Found")
 	}
 	if err != nil {
+		log.Println(err)
 		log.Fatal(err)
 	}
 	defer rows.Close()
 	for rows.Next() {
 		project := new(models.Project)
-		err = rows.Scan(&project.ID, &project.Name)
+		err = rows.Scan(&project.ID, &project.Name, project.Description)
 		if err != nil {
+			log.Println(err)
 			log.Fatal(err)
 		}
 		projects = append(projects, project)
@@ -80,15 +90,18 @@ func (store *dbStore) GetAllProjects() (projects []*models.Project, err error) {
 	// get any error encountered during iteration
 	err = rows.Err()
 	if err != nil {
+		log.Println(err)
 		log.Fatal(err)
 	}
 
 	return projects, err
 
 }
-func (store *dbStore) UpdateProject(id int, project *models.Project) (err error) {
 
-	_, err = store.db.Exec(`UPDATE projects SET name = $2 description =$3 WHERE id = $1;`, id, project.Name, project.Description)
+//UpdateProject is for  updating project in database
+func (store *DBStore) UpdateProject(id int, project *models.Project) (err error) {
+
+	_, err = store.DB.Exec(`UPDATE projects SET name = $2 description =$3 WHERE id = $1;`, id, project.Name, project.Description)
 
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
@@ -99,8 +112,10 @@ func (store *dbStore) UpdateProject(id int, project *models.Project) (err error)
 	return err
 
 }
-func (store *dbStore) DeleteProject(id int) (err error) {
-	_, err = store.db.Exec(`DELETE FROM projects WHERE id = $1;`, id)
+
+//DeleteProject is for  deleting project in database
+func (store *DBStore) DeleteProject(id int) (err error) {
+	_, err = store.DB.Exec(`DELETE FROM projects WHERE id = $1;`, id)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -109,8 +124,9 @@ func (store *dbStore) DeleteProject(id int) (err error) {
 
 //Columns
 
-func (store *dbStore) CreateColumn(column *models.Column) (id int, err error) {
-	res, err := store.db.Exec(`INSERT INTO columns (name, position) VALUES ($1, $2);`, column.Name, column.Position)
+//CreateColumn is for inserting column into database
+func (store *DBStore) CreateColumn(column *models.Column) (id int, err error) {
+	res, err := store.DB.Exec(`INSERT INTO columns (name, position) VALUES ($1, $2);`, column.Name, column.Position)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -119,10 +135,12 @@ func (store *dbStore) CreateColumn(column *models.Column) (id int, err error) {
 	return id, err
 
 }
-func (store *dbStore) GetColumn(id int) (column *models.Column, err error) {
+
+//GetColumn is for getting column from database
+func (store *DBStore) GetColumn(id int) (column *models.Column, err error) {
 	column = new(models.Column)
 
-	err = store.db.QueryRow(`SELECT id, name, position FROM columns WHERE id=$1;`, id).Scan(&column)
+	err = store.DB.QueryRow(`SELECT id, name, position FROM columns WHERE id=$1;`, id).Scan(&column)
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
 	}
@@ -132,10 +150,12 @@ func (store *dbStore) GetColumn(id int) (column *models.Column, err error) {
 	return column, err
 
 }
-func (store *dbStore) GetAllColumns() (columns []*models.Column, err error) {
+
+//GetAllColumns is for getting all columns from database
+func (store *DBStore) GetAllColumns() (columns []*models.Column, err error) {
 
 	columns = []*models.Column{}
-	rows, err := store.db.Query(`SELECT id, name, position  FROM columns ORDER BY position;`)
+	rows, err := store.DB.Query(`SELECT id, name, position  FROM columns ORDER BY position;`)
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
 	}
@@ -160,30 +180,11 @@ func (store *dbStore) GetAllColumns() (columns []*models.Column, err error) {
 	return columns, err
 
 }
-func (store *dbStore) UpdateColumn(id int, column *models.Column) (err error) {
 
-	_, err = store.db.Exec(`UPDATE columns SET name = $2 position =$3 WHERE id = $1;`, id, column.Name, column.Position)
+//UpdateColumn is for updating column in database
+func (store *DBStore) UpdateColumn(id int, column *models.Column) (err error) {
 
-	if err == sql.ErrNoRows {
-		log.Fatal("No Results Found")
-	}
-	if err != nil {
-		log.Fatal(err)
-	}
-	return err
-
-}
-func (store *dbStore) DeleteColumn(id int) (err error) {
-	_, err = store.db.Exec(`DELETE FROM columns WHERE id = $1;`, id)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return err
-}
-
-func (store *dbStore) UpdateColumnPosition(id int, position int) (err error) {
-
-	_, err = store.db.Exec(`UPDATE columns SET position =$2 WHERE id = $1;`, id, position)
+	_, err = store.DB.Exec(`UPDATE columns SET name = $2 position =$3 WHERE id = $1;`, id, column.Name, column.Position)
 
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
@@ -194,9 +195,35 @@ func (store *dbStore) UpdateColumnPosition(id int, position int) (err error) {
 	return err
 
 }
-func (store *dbStore) CountColumns(id int, position int) (err error) {
 
-	_, err = store.db.Exec(`UPDATE columns SET position =$2 WHERE id = $1;`, id, position)
+//DeleteColumn is for deleting column in database
+func (store *DBStore) DeleteColumn(id int) (err error) {
+	_, err = store.DB.Exec(`DELETE FROM columns WHERE id = $1;`, id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return err
+}
+
+//UpdateColumnPosition is for updating column position in database
+func (store *DBStore) UpdateColumnPosition(id int, position int) (err error) {
+
+	_, err = store.DB.Exec(`UPDATE columns SET position =$2 WHERE id = $1;`, id, position)
+
+	if err == sql.ErrNoRows {
+		log.Fatal("No Results Found")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return err
+
+}
+
+//CountColumns is for counting columns in database
+func (store *DBStore) CountColumns(id int, position int) (err error) {
+
+	_, err = store.DB.Exec(`UPDATE columns SET position =$2 WHERE id = $1;`, id, position)
 
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
@@ -210,8 +237,9 @@ func (store *dbStore) CountColumns(id int, position int) (err error) {
 
 //Tasks
 
-func (store *dbStore) CreateTask(task *models.Task) (id int, err error) {
-	res, err := store.db.Exec(`INSERT INTO tasks (name, description, position) VALUES ($1, $2, $3);`, task.Name, task.Description, task.Position)
+//CreateTask is for inserting task to database
+func (store *DBStore) CreateTask(task *models.Task) (id int, err error) {
+	res, err := store.DB.Exec(`INSERT INTO tasks (name, description, position) VALUES ($1, $2, $3);`, task.Name, task.Description, task.Position)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -220,10 +248,12 @@ func (store *dbStore) CreateTask(task *models.Task) (id int, err error) {
 	return id, err
 
 }
-func (store *dbStore) GetTask(id int) (task *models.Task, err error) {
+
+//GetTask is for getting task from database
+func (store *DBStore) GetTask(id int) (task *models.Task, err error) {
 	task = new(models.Task)
 
-	err = store.db.QueryRow(`SELECT id, name, description, position FROM tasks WHERE id=$1;`, id).Scan(&task)
+	err = store.DB.QueryRow(`SELECT id, name, description, position FROM tasks WHERE id=$1;`, id).Scan(&task)
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
 	}
@@ -233,10 +263,12 @@ func (store *dbStore) GetTask(id int) (task *models.Task, err error) {
 	return task, err
 
 }
-func (store *dbStore) GetAllTasks() (tasks []*models.Task, err error) {
+
+//GetAllTasks is for all getting tasks from database
+func (store *DBStore) GetAllTasks() (tasks []*models.Task, err error) {
 
 	tasks = []*models.Task{}
-	rows, err := store.db.Query(`SELECT id,  name, description, position  FROM tasks ORDER BY position;`)
+	rows, err := store.DB.Query(`SELECT id,  name, description, position  FROM tasks ORDER BY position;`)
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
 	}
@@ -261,9 +293,11 @@ func (store *dbStore) GetAllTasks() (tasks []*models.Task, err error) {
 	return tasks, err
 
 }
-func (store *dbStore) UpdateTask(id int, task *models.Task) (err error) {
 
-	_, err = store.db.Exec(`UPDATE tasks SET name = $2 description = $3 position =$4 WHERE id = $1;`, id, task.Name, task.Description, task.Position)
+//UpdateTask is for updating task in  database
+func (store *DBStore) UpdateTask(id int, task *models.Task) (err error) {
+
+	_, err = store.DB.Exec(`UPDATE tasks SET name = $2 description = $3 position =$4 WHERE id = $1;`, id, task.Name, task.Description, task.Position)
 
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
@@ -274,17 +308,20 @@ func (store *dbStore) UpdateTask(id int, task *models.Task) (err error) {
 	return err
 
 }
-func (store *dbStore) DeleteTask(id int) (err error) {
-	_, err = store.db.Exec(`DELETE FROM tasks WHERE id = $1;`, id)
+
+//DeleteTask is for deleting task in  database
+func (store *DBStore) DeleteTask(id int) (err error) {
+	_, err = store.DB.Exec(`DELETE FROM tasks WHERE id = $1;`, id)
 	if err != nil {
 		log.Fatal(err)
 	}
 	return err
 }
 
-func (store *dbStore) UpdateTaskPosition(id int, position int) (err error) {
+//UpdateTaskPosition is for updating  task position in  database
+func (store *DBStore) UpdateTaskPosition(id int, position int) (err error) {
 
-	_, err = store.db.Exec(`UPDATE tasks SET position = $2 WHERE id = $1;`, id, position)
+	_, err = store.DB.Exec(`UPDATE tasks SET position = $2 WHERE id = $1;`, id, position)
 
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
@@ -298,8 +335,9 @@ func (store *dbStore) UpdateTaskPosition(id int, position int) (err error) {
 
 //Comments
 
-func (store *dbStore) CreateComment(comment *models.Comment) (id int, err error) {
-	res, err := store.db.Exec(`INSERT INTO comments (text, date) VALUES ($1, $2);`, comment.Text, comment.Date)
+//CreateComment is for inserting comment in database
+func (store *DBStore) CreateComment(comment *models.Comment) (id int, err error) {
+	res, err := store.DB.Exec(`INSERT INTO comments (text, date) VALUES ($1, $2);`, comment.Text, comment.Date)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -308,10 +346,12 @@ func (store *dbStore) CreateComment(comment *models.Comment) (id int, err error)
 	return id, err
 
 }
-func (store *dbStore) GetComment(id int) (comment *models.Comment, err error) {
+
+//GetComment is for getting comment from database
+func (store *DBStore) GetComment(id int) (comment *models.Comment, err error) {
 	comment = new(models.Comment)
 
-	err = store.db.QueryRow(`SELECT id, text, date FROM comments WHERE id=$1;`, id).Scan(&comment)
+	err = store.DB.QueryRow(`SELECT id, text, date FROM comments WHERE id=$1;`, id).Scan(&comment)
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
 	}
@@ -321,10 +361,12 @@ func (store *dbStore) GetComment(id int) (comment *models.Comment, err error) {
 	return comment, err
 
 }
-func (store *dbStore) GetAllComments() (comments []*models.Comment, err error) {
+
+//GetAllComments is for getting  all comments from database
+func (store *DBStore) GetAllComments() (comments []*models.Comment, err error) {
 
 	comments = []*models.Comment{}
-	rows, err := store.db.Query(`SELECT id,  text, date  FROM comments ORDER BY date DESC;`)
+	rows, err := store.DB.Query(`SELECT id,  text, date  FROM comments ORDER BY date DESC;`)
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
 	}
@@ -349,9 +391,11 @@ func (store *dbStore) GetAllComments() (comments []*models.Comment, err error) {
 	return comments, err
 
 }
-func (store *dbStore) UpdateComment(id int, comment *models.Comment) (err error) {
 
-	_, err = store.db.Exec(`UPDATE comments SET text = $2 date = $3  WHERE id = $1;`, id, comment.Text, comment.Date)
+//UpdateComment is for  updating   comment in database
+func (store *DBStore) UpdateComment(id int, comment *models.Comment) (err error) {
+
+	_, err = store.DB.Exec(`UPDATE comments SET text = $2 date = $3  WHERE id = $1;`, id, comment.Text, comment.Date)
 
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
@@ -362,8 +406,10 @@ func (store *dbStore) UpdateComment(id int, comment *models.Comment) (err error)
 	return err
 
 }
-func (store *dbStore) DeleteComment(id int) (err error) {
-	_, err = store.db.Exec(`DELETE FROM comments WHERE id = $1;`, id)
+
+//DeleteComment is for  deleting  comment in database
+func (store *DBStore) DeleteComment(id int) (err error) {
+	_, err = store.DB.Exec(`DELETE FROM comments WHERE id = $1;`, id)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -372,30 +418,36 @@ func (store *dbStore) DeleteComment(id int) (err error) {
 
 //Connections
 
-func (store *dbStore) CreateProjectColumns(projid int, colid int) (err error) {
-	_, err = store.db.Exec(`INSERT INTO projects_columns (project_id, column_id) VALUES ($1, $2);`, projid, colid)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return err
-}
-func (store *dbStore) CreateColumnTasks(taskid int, colid int) (err error) {
-	_, err = store.db.Exec(`INSERT INTO columns_tasks (column_id, task_id) VALUES ($1, $2);`, colid, taskid)
+//CreateProjectColumns inserting ids of projects and columns to database
+func (store *DBStore) CreateProjectColumns(projid int, colid int) (err error) {
+	_, err = store.DB.Exec(`INSERT INTO projects_columns (project_id, column_id) VALUES ($1, $2);`, projid, colid)
 	if err != nil {
 		log.Fatal(err)
 	}
 	return err
 }
 
-func (store *dbStore) CreateTaskComments(taskid int, comid int) (err error) {
-	_, err = store.db.Exec(`INSERT INTO tasks_comments (task_id, comment_id) VALUES ($1, $2);`, taskid, comid)
+//CreateColumnTasks inserting ids of columns and tasks to database
+func (store *DBStore) CreateColumnTasks(taskid int, colid int) (err error) {
+	_, err = store.DB.Exec(`INSERT INTO columns_tasks (column_id, task_id) VALUES ($1, $2);`, colid, taskid)
 	if err != nil {
 		log.Fatal(err)
 	}
 	return err
 }
-func (store *dbStore) UpdateColumnTasks(colid int, taskid int) (err error) {
-	_, err = store.db.Exec(`UPDATE columns_tasks SET column_id = $1 task_id = $2;`, colid, taskid)
+
+//CreateTaskComments inserting ids of tasks and comments to database
+func (store *DBStore) CreateTaskComments(taskid int, comid int) (err error) {
+	_, err = store.DB.Exec(`INSERT INTO tasks_comments (task_id, comment_id) VALUES ($1, $2);`, taskid, comid)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return err
+}
+
+//UpdateColumnTasks is for updating columns_tasks table
+func (store *DBStore) UpdateColumnTasks(colid int, taskid int) (err error) {
+	_, err = store.DB.Exec(`UPDATE columns_tasks SET column_id = $1 task_id = $2;`, colid, taskid)
 
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
@@ -406,8 +458,9 @@ func (store *dbStore) UpdateColumnTasks(colid int, taskid int) (err error) {
 	return err
 }
 
-func (store *dbStore) MoveTasks(colid int, nextid int) (err error) {
-	_, err = store.db.Exec(`UPDATE columns_tasks SET column_id = $2 WHERE column_id = $1;`, colid, nextid)
+//MoveTasks is for moving tasks from one column to another
+func (store *DBStore) MoveTasks(colid int, nextid int) (err error) {
+	_, err = store.DB.Exec(`UPDATE columns_tasks SET column_id = $2 WHERE column_id = $1;`, colid, nextid)
 
 	if err == sql.ErrNoRows {
 		log.Fatal("No Results Found")
