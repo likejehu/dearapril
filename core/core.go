@@ -132,7 +132,7 @@ func (c *Controller) MoveColumn(id int, next int) (err error) {
 	if nextPosition > oldPosition {
 		c.Store.UpdateColumnPosition(id, oldPosition+1)
 	}
-	if nextPosition > oldPosition {
+	if nextPosition < oldPosition {
 		c.Store.UpdateColumnPosition(id, oldPosition-1)
 	}
 	return nil
@@ -202,7 +202,7 @@ func (c *Controller) MoveTaskUpDown(taskid int, next int) (err error) {
 	if nextPosition > oldPosition {
 		c.Store.UpdateTaskPosition(taskid, oldPosition+1)
 	}
-	if nextPosition > oldPosition {
+	if nextPosition < oldPosition {
 		c.Store.UpdateTaskPosition(taskid, oldPosition-1)
 	}
 	return nil

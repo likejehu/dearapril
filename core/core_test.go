@@ -97,3 +97,87 @@ func TestDeleteProject(t *testing.T) {
 		assert.Equal(t, nil, nil)
 	})
 }
+
+//COLUMNS
+
+func TestReadColumns(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("GetAllColumns").Return(testColumns, nil)
+		columns, _ := testController.ReadColumns()
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, testColumns, columns)
+	})
+}
+
+func TestCreateColumn(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("CreateColumn", testColumnOne).Return(1, nil)
+		mockStore.On("CreateProjectColumns", 1, 1).Return(nil)
+		columnid, _ := testController.CreateColumn(testColumnOne, 1)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, columnid, 1)
+	})
+}
+
+func TestUpdateColumn(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("UpdateColumn", 1, testColumnOne).Return(nil)
+		testController.UpdateColumn(1, testColumnOne)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, nil, nil)
+	})
+}
+
+func TestReadColumn(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("GetColumn", 1).Return(testColumnOne, nil)
+		column, _ := testController.ReadColumn(1)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, testColumnOne, column)
+	})
+}
+
+func TestDeleteColumn(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("DeleteColumn", 1).Return(nil)
+		testController.DeleteColumn(1)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, nil, nil)
+	})
+}
+
+func TestMoveColumn(t *testing.T) {
+	t.Run("success with next bigger than current", func(t *testing.T) {
+		//setup
+		mockStore := mocks.Storer{}
+		testController := Controller{&mockStore}
+		mockStore.On("GetColumn", 1).Return(testColumnOne, nil)
+		mockStore.On("GetColumn", 2).Return(testColumnTwo, nil)
+		mockStore.On("UpdateColumnPosition", 2, 1).Return(nil)
+		mockStore.On("UpdateColumnPosition", 1, 2).Return(nil)
+		testController.MoveColumn(1, 2)
+		mockStore.AssertExpectations(t)
+		//assertions
+		assert.Equal(t, nil, nil)
+	})
+}
