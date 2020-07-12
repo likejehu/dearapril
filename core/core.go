@@ -15,21 +15,21 @@ type Storer interface {
 
 	CreateColumn(column *models.Column) (id int, err error)
 	GetColumn(id int) (column *models.Column, err error)
-	GetAllColumns() (columns []*models.Column, err error)
+	GetAllColumns(projectID int) (columns []*models.Column, err error)
 	UpdateColumn(id int, column *models.Column) (err error)
 	DeleteColumn(id int) (err error)
 	UpdateColumnPosition(id int, position int) (err error)
 
 	CreateTask(task *models.Task) (id int, err error)
 	GetTask(id int) (task *models.Task, err error)
-	GetAllTasks() (tasks []*models.Task, err error)
+	GetAllTasks(columnID int) (tasks []*models.Task, err error)
 	UpdateTask(id int, task *models.Task) (err error)
 	DeleteTask(id int) (err error)
 	UpdateTaskPosition(id int, position int) (err error)
 
 	CreateComment(comment *models.Comment) (id int, err error)
 	GetComment(id int) (comment *models.Comment, err error)
-	GetAllComments() (comments []*models.Comment, err error)
+	GetAllComments(taskID int) (comments []*models.Comment, err error)
 	UpdateComment(id int, comment *models.Comment) (err error)
 	DeleteComment(id int) (err error)
 
@@ -94,9 +94,9 @@ func (c *Controller) DeleteProject(id int) (err error) {
 //COLUMNS
 
 // ReadColumns  gets all the Columns
-func (c *Controller) ReadColumns() (col []*models.Column, err error) {
+func (c *Controller) ReadColumns(projectID int) (col []*models.Column, err error) {
 
-	col, err = c.Store.GetAllColumns()
+	col, err = c.Store.GetAllColumns(projectID)
 	return col, err
 }
 
@@ -147,9 +147,9 @@ func (c *Controller) MoveColumn(id int, next int) (err error) {
 //TASKS
 
 // ReadTasks  gets all the Tasks
-func (c *Controller) ReadTasks() (tasks []*models.Task, err error) {
+func (c *Controller) ReadTasks(columnID int) (tasks []*models.Task, err error) {
 
-	tasks, err = c.Store.GetAllTasks()
+	tasks, err = c.Store.GetAllTasks(columnID)
 	return tasks, err
 }
 
@@ -217,9 +217,9 @@ func (c *Controller) MoveTaskUpDown(taskid int, next int) (err error) {
 //COMMENTS
 
 // ReadComments  gets all the Comments
-func (c *Controller) ReadComments() (com []*models.Comment, err error) {
+func (c *Controller) ReadComments(taskID int) (com []*models.Comment, err error) {
 
-	com, err = c.Store.GetAllComments()
+	com, err = c.Store.GetAllComments(taskID)
 	return com, err
 }
 

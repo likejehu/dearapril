@@ -231,13 +231,13 @@ func (_m *AppController) ReadColumn(id int) (*models.Column, error) {
 	return r0, r1
 }
 
-// ReadColumns provides a mock function with given fields:
-func (_m *AppController) ReadColumns() ([]*models.Column, error) {
-	ret := _m.Called()
+// ReadColumns provides a mock function with given fields: projectID
+func (_m *AppController) ReadColumns(projectID int) ([]*models.Column, error) {
+	ret := _m.Called(projectID)
 
 	var r0 []*models.Column
-	if rf, ok := ret.Get(0).(func() []*models.Column); ok {
-		r0 = rf()
+	if rf, ok := ret.Get(0).(func(int) []*models.Column); ok {
+		r0 = rf(projectID)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]*models.Column)
@@ -245,8 +245,8 @@ func (_m *AppController) ReadColumns() ([]*models.Column, error) {
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func() error); ok {
-		r1 = rf()
+	if rf, ok := ret.Get(1).(func(int) error); ok {
+		r1 = rf(projectID)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -277,13 +277,13 @@ func (_m *AppController) ReadComment(id int) (*models.Comment, error) {
 	return r0, r1
 }
 
-// ReadComments provides a mock function with given fields:
-func (_m *AppController) ReadComments() ([]*models.Comment, error) {
-	ret := _m.Called()
+// ReadComments provides a mock function with given fields: taskID
+func (_m *AppController) ReadComments(taskID int) ([]*models.Comment, error) {
+	ret := _m.Called(taskID)
 
 	var r0 []*models.Comment
-	if rf, ok := ret.Get(0).(func() []*models.Comment); ok {
-		r0 = rf()
+	if rf, ok := ret.Get(0).(func(int) []*models.Comment); ok {
+		r0 = rf(taskID)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]*models.Comment)
@@ -291,8 +291,8 @@ func (_m *AppController) ReadComments() ([]*models.Comment, error) {
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func() error); ok {
-		r1 = rf()
+	if rf, ok := ret.Get(1).(func(int) error); ok {
+		r1 = rf(taskID)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -369,13 +369,13 @@ func (_m *AppController) ReadTask(id int) (*models.Task, error) {
 	return r0, r1
 }
 
-// ReadTasks provides a mock function with given fields:
-func (_m *AppController) ReadTasks() ([]*models.Task, error) {
-	ret := _m.Called()
+// ReadTasks provides a mock function with given fields: columnID
+func (_m *AppController) ReadTasks(columnID int) ([]*models.Task, error) {
+	ret := _m.Called(columnID)
 
 	var r0 []*models.Task
-	if rf, ok := ret.Get(0).(func() []*models.Task); ok {
-		r0 = rf()
+	if rf, ok := ret.Get(0).(func(int) []*models.Task); ok {
+		r0 = rf(columnID)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]*models.Task)
@@ -383,8 +383,8 @@ func (_m *AppController) ReadTasks() ([]*models.Task, error) {
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func() error); ok {
-		r1 = rf()
+	if rf, ok := ret.Get(1).(func(int) error); ok {
+		r1 = rf(columnID)
 	} else {
 		r1 = ret.Error(1)
 	}

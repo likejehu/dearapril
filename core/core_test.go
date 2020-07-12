@@ -7,6 +7,7 @@ import (
 	"github.com/likejehu/dearapril/core/mocks"
 	"github.com/likejehu/dearapril/models"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 var (
@@ -105,8 +106,8 @@ func TestReadColumns(t *testing.T) {
 		//setup
 		mockStore := mocks.Storer{}
 		testController := Controller{&mockStore}
-		mockStore.On("GetAllColumns").Return(testColumns, nil)
-		columns, _ := testController.ReadColumns()
+		mockStore.On("GetAllColumns", mock.Anything).Return(testColumns, nil)
+		columns, _ := testController.ReadColumns(1)
 		mockStore.AssertExpectations(t)
 		//assertions
 		assert.Equal(t, testColumns, columns)
@@ -189,8 +190,8 @@ func TestReadTasks(t *testing.T) {
 		//setup
 		mockStore := mocks.Storer{}
 		testController := Controller{&mockStore}
-		mockStore.On("GetAllTasks").Return(testTasks, nil)
-		tasks, _ := testController.ReadTasks()
+		mockStore.On("GetAllTasks", mock.Anything).Return(testTasks, nil)
+		tasks, _ := testController.ReadTasks(1)
 		mockStore.AssertExpectations(t)
 		//assertions
 		assert.Equal(t, testTasks, tasks)
@@ -297,8 +298,8 @@ func TestReadComments(t *testing.T) {
 		//setup
 		mockStore := mocks.Storer{}
 		testController := Controller{&mockStore}
-		mockStore.On("GetAllComments").Return(testComments, nil)
-		comments, _ := testController.ReadComments()
+		mockStore.On("GetAllComments", mock.Anything).Return(testComments, nil)
+		comments, _ := testController.ReadComments(1)
 		mockStore.AssertExpectations(t)
 		//assertions
 		assert.Equal(t, testComments, comments)

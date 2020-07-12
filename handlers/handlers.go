@@ -24,14 +24,14 @@ type AppController interface {
 	ReadColumn(id int) (col *models.Column, err error)
 	UpdateColumn(id int, col *models.Column) (err error)
 	DeleteColumn(id int) (err error)
-	ReadColumns() (col []*models.Column, err error)
+	ReadColumns(projectID int) (col []*models.Column, err error)
 	MoveColumn(id int, next int) (err error)
 
 	CreateTask(t *models.Task, colid int) (taskid int, err error)
 	ReadTask(id int) (t *models.Task, err error)
 	UpdateTask(id int, t *models.Task) (err error)
 	DeleteTask(id int) (err error)
-	ReadTasks() (tasks []*models.Task, err error)
+	ReadTasks(columnID int) (tasks []*models.Task, err error)
 	MoveTasksToColumn(colid, nextid int) (err error)
 	MoveTaskToColumn(colid, taskid int) (err error)
 	MoveTaskUpDown(taskid int, next int) (err error)
@@ -40,7 +40,7 @@ type AppController interface {
 	ReadComment(id int) (com *models.Comment, err error)
 	UpdateComment(id int, com *models.Comment) (err error)
 	DeleteComment(id int) (err error)
-	ReadComments() (com []*models.Comment, err error)
+	ReadComments(taskID int) (com []*models.Comment, err error)
 }
 
 // Handler is struct for handlers
@@ -124,7 +124,9 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 
 // GetAllColumns gets all the columns
 func (h *Handler) GetAllColumns(w http.ResponseWriter, r *http.Request) {
-	columns, err := h.App.ReadColumns()
+	pID := chi.URLParam(r, "projectid") // getting id of project from the route
+	projectID, _ := strconv.Atoi(pID)
+	columns, err := h.App.ReadColumns(projectID)
 	js, err := json.Marshal(columns)
 	if err != nil {
 		log.Print(err)
@@ -210,7 +212,9 @@ func (h *Handler) MoveColumn(w http.ResponseWriter, r *http.Request) {
 
 // GetAllTasks gets all the Tasks
 func (h *Handler) GetAllTasks(w http.ResponseWriter, r *http.Request) {
-	tasks, err := h.App.ReadTasks()
+	cID := chi.URLParam(r, "columnid") // getting id of column from the route
+	columnID, _ := strconv.Atoi(cID)
+	tasks, err := h.App.ReadTasks(columnID)
 	js, err := json.Marshal(tasks)
 	if err != nil {
 		log.Print(err)
@@ -306,7 +310,9 @@ func (h *Handler) MoveTask(w http.ResponseWriter, r *http.Request) {
 
 // GetAllComments gets all the Comments
 func (h *Handler) GetAllComments(w http.ResponseWriter, r *http.Request) {
-	comments, err := h.App.ReadComments()
+	tID := chi.URLParam(r, "taskid") // getting id of Task from the route
+	taskID, _ := strconv.Atoi(tID)
+	comments, err := h.App.ReadComments(taskID)
 	js, err := json.Marshal(comments)
 	if err != nil {
 		log.Print(err)

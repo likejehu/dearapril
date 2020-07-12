@@ -150,7 +150,7 @@ func (store *DBStore) GetColumn(id int) (column *models.Column, err error) {
 }
 
 //GetAllColumns is for getting all columns from database
-func (store *DBStore) GetAllColumns() (columns []*models.Column, err error) {
+func (store *DBStore) GetAllColumns(projectID int) (columns []*models.Column, err error) {
 
 	columns = []*models.Column{}
 	rows, err := store.DB.Query(`SELECT id, name, position  FROM columns ORDER BY position;`)
@@ -263,7 +263,7 @@ func (store *DBStore) GetTask(id int) (task *models.Task, err error) {
 }
 
 //GetAllTasks is for all getting tasks from database
-func (store *DBStore) GetAllTasks() (tasks []*models.Task, err error) {
+func (store *DBStore) GetAllTasks(columnID int) (tasks []*models.Task, err error) {
 
 	tasks = []*models.Task{}
 	rows, err := store.DB.Query(`SELECT id,  name, description, position  FROM tasks ORDER BY position;`)
@@ -361,7 +361,7 @@ func (store *DBStore) GetComment(id int) (comment *models.Comment, err error) {
 }
 
 //GetAllComments is for getting  all comments from database
-func (store *DBStore) GetAllComments() (comments []*models.Comment, err error) {
+func (store *DBStore) GetAllComments(taskID int) (comments []*models.Comment, err error) {
 
 	comments = []*models.Comment{}
 	rows, err := store.DB.Query(`SELECT id,  text, date  FROM comments ORDER BY date DESC;`)

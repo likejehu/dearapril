@@ -126,7 +126,7 @@ func TestGetAllColumns(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
 		mockApp := mocks.AppController{}
-		mockApp.On("ReadColumns").Return(testColumns, nil)
+		mockApp.On("ReadColumns", mock.Anything).Return(testColumns, nil)
 		handler := &Handler{&mockApp}
 		handler.GetAllColumns(rec, req)
 		mockApp.AssertExpectations(t)
@@ -219,7 +219,7 @@ func TestGetAllTasks(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
 		mockApp := mocks.AppController{}
-		mockApp.On("ReadTasks").Return(testTasks, nil)
+		mockApp.On("ReadTasks", mock.Anything).Return(testTasks, nil)
 		handler := &Handler{&mockApp}
 		handler.GetAllTasks(rec, req)
 		mockApp.AssertExpectations(t)
@@ -325,7 +325,7 @@ func TestGetAllComments(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
 		mockApp := mocks.AppController{}
-		mockApp.On("ReadComments").Return(testComments, nil)
+		mockApp.On("ReadComments", mock.Anything).Return(testComments, nil)
 		handler := &Handler{&mockApp}
 		handler.GetAllComments(rec, req)
 		mockApp.AssertExpectations(t)
