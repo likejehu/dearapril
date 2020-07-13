@@ -276,7 +276,7 @@ func (store *DBStore) GetAllTasks(columnID int) (tasks []*models.Task, err error
 	defer rows.Close()
 	for rows.Next() {
 		task := new(models.Task)
-		err = rows.Scan(&task.ID, &task.Name, task.Description, &task.Position)
+		err = rows.Scan(&task.ID, &task.Name, &task.Description, &task.Position)
 		if err != nil {
 			log.Fatal(err)
 		}
